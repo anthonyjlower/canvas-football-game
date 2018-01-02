@@ -1,6 +1,5 @@
 // console.log("working")
 
-
 const canvas = document.getElementById('field');
 const ctx = canvas.getContext("2d");
 let round = 1;
@@ -9,7 +8,6 @@ const turn = "Player 1";
 let timer;
 const fieldWidth = document.getElementById('field').width;
 const fieldHeight = document.getElementById('field').height;
-
 
 const playAgainBtn = document.getElementById('play-again');
 const tackledModal = document.getElementById('tackled-modal');
@@ -37,19 +35,19 @@ const runningBack = {
 	},
 	move: function(){
 		if (this.direction === 'right') {
-			if (this.body.x + this.speed < fieldWidth	) {
+			if (this.body.x + this.speed < fieldWidth - 10) {
 				this.body = {x: this.body.x + this.speed, y: this.body.y, r: 12.5, e:0}
 			}
 		} else if (this.direction === 'juke right'){
-			if (this.body.x + 30 < fieldWidth) {
+			if (this.body.x + 30 < fieldWidth - 10) {
 				this.body = {x: this.body.x + 30, y: this.body.y, r: 12.5, e:0}
 			}
 		} else if (this.direction === 'left'){
-			if (this.body.x - this.speed > 0) {
+			if (this.body.x - this.speed > 10) {
 				this.body = {x: this.body.x - this.speed, y: this.body.y, r: 12.5, e:0}
 			}
 		} else if (this.direction === 'juke left'){	
-			if (this.body.x - 30 > 0) {
+			if (this.body.x - 30 > 30) {
 				this.body = {x: this.body.x - 30, y: this.body.y, r: 12.5, e:0}
 			}
 		} else if (this.direction === 'up'){
@@ -82,7 +80,7 @@ class Opponent {
 	drawBody() {
 		ctx.beginPath();
 		ctx.arc(this.body.x, this.body.y, this.body.r, this.body.e, Math.PI*2)
-		ctx.strokeStyle = 'white';
+		ctx.strokeStyle = 'black';
 		ctx.fill();
 		ctx.closePath();
 	}
@@ -91,25 +89,25 @@ class Opponent {
 
 		// 50% of the time the opponenet moves down
 		if (randomNum <= 49) {
-			if (this.body.y + this.speed < fieldHeight) {
+			if (this.body.y + this.speed < fieldHeight - 10) {
 				this.body = {x: this.body.x, y: this.body.y + this.speed, r: 12.5, e:0}
 				this.drawBody()
 			}
 		// 20% of the time the opponent moves left
 		} else if (randomNum >= 50 && randomNum <= 69){	
-			if (this.body.x - this.speed > 0) {
+			if (this.body.x - this.speed > 10) {
 				this.body = {x: this.body.x - this.speed, y: this.body.y, r: 12.5, e:0}
 				this.drawBody()
 			}
 		// 20% of the time the opponent moves right
 		} else if (randomNum >= 70 && randomNum <= 89){
-			if (this.body.x + this.speed < fieldWidth) {
+			if (this.body.x + this.speed < fieldWidth - 10) {
 				this.body = {x: this.body.x + this.speed, y: this.body.y, r: 12.5, e:0}
 				this.drawBody()
 			}
 		//10% of the time the opponent move up
 		} else {
-			if (this.body.x - this.speed > 0) {
+			if (this.body.x - this.speed > 10) {
 				this.body = {x: this.body.x, y: this.body.y - this.speed, r: 12.5, e:0}
 				this.drawBody()
 			}
@@ -132,7 +130,59 @@ const factory = {
 /*******
 Field Design
 *******/
+const fieldLines = {
+	draw: function(){
+	
+		// Outside lines
+		ctx.beginPath();
+		ctx.rect(0, 0, fieldWidth, fieldHeight);
+		ctx.fillStyle = "green";
+		ctx.fill();
+		ctx.lineWidth = 10;
+      	ctx.strokeStyle = "#FFF";
+      	ctx.stroke();
+      	ctx.closePath();
+      	ctx.fillStyle = "#FFF";
 
+      	//Home Endzone
+      	ctx.beginPath();
+      	ctx.rect(5, 5, fieldWidth - 10, 30)
+      	ctx.fillStyle = "blue";
+      	ctx.fill();
+      	ctx.lineWidth = 4;
+      	ctx.strokeStyle = "#FFF";
+      	ctx.stroke();
+      	ctx.closePath();
+      	ctx.fillStyle = "#FFF"
+
+      	//Away Endzone
+      	ctx.beginPath();
+      	ctx.rect(5, fieldHeight - 35, fieldWidth - 10, 30)
+      	ctx.fillStyle = "blue";
+      	ctx.fill();
+      	ctx.lineWidth = 4;
+      	ctx.strokeStyle = "#FFF";
+      	ctx.stroke();
+      	ctx.closePath();
+      	ctx.fillStyle = "#FFF"
+
+      	//50 Yard Line
+      	ctx.beginPath();
+      	ctx.rect(0, fieldHeight / 2, fieldWidth, 1)
+      	ctx.fillStyle = "white";
+      	ctx.fill();
+      	ctx.stroke();
+      	ctx.closePath();
+
+      	//25 Yard LIne
+		ctx.beginPath();
+      	ctx.rect(0, fieldHeight / 4, fieldWidth, 1)
+      	ctx.fillStyle = "white";
+      	ctx.fill();
+      	ctx.stroke();
+      	ctx.closePath();      	
+	}
+}
 
 
 
@@ -214,6 +264,7 @@ let animateCanvas = function() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	collisionDetection();
 	scoreTd();
+	fieldLines.draw();
 	runningBack.drawBody();
 	for(let i = 0; i < factory.roster.length; i++){
 		factory.roster[i].drawBody();
@@ -266,12 +317,13 @@ const endGame = function() {
 };
 
 const scoreTd = function() {
-	if (runningBack.body.y < 15) {
+	if (runningBack.body.y < 30) {
 		stopOpp();
 		touchDownModal.style.display = "block";
 	};
 }
 
+fieldLines.draw();
 
 
 

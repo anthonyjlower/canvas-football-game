@@ -1,24 +1,49 @@
 #field{
-	background-color: green;
+	/*background-color: green;*/
 	/*margin: 10 auto;*/
+	height: 600px;
+	width: 250px;
+	border: 1px solid black;
 }
 body{
 	display: flex;
 	justify-content: space-around;
 	width: 900px;
 	height: 600px;
-	border: 1px solid black;
+	/*border: 1px solid black;*/
 	margin: 2.5vh auto;
+	background-color: rgb(230,230,230);
 }
 div{
-	border: 1px solid black;
+	/*border: 1px solid black;*/
 }
 .left-column{
 	width: 300px;
-	height: 100%;
+	height: 600px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	border: 1px solid black;
+}
+.menu{
+	width: 100%;
+	height: 50%;
+	border: 1px solid black;
+	background-color: rgba(0,0,0, .25);
+}
+.logo{
+	width: 100%;
+	height: 50%;
+}
+.options{
+	display: flex;
+	justify-content: space-between;
+	height: 50%;
+}
+.menu-btns{
+	margin: auto;
+	height: 50%;
+	width: 40%;
 }
 .jumbotron{
 	width: 100%;
@@ -33,6 +58,7 @@ div{
 .round{
 	width: 100%;
 	height: 50%;
+	border: 1px solid black;
 }
 .scoreboard{
 	width: 100%;
@@ -43,10 +69,7 @@ div{
 .score{
 	width: 50%;
 	height: 100%;
-}
-.menu{
-	width: 100%;
-	height: 50%;
+	border: 1px solid black;
 }
 /* The Modal (background) */
 .modal {
