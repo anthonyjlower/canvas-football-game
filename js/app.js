@@ -176,7 +176,8 @@ document.addEventListener('keydown', function(event){
 // When the user clicks on <playAgainBtn> close the modal and start over
 playAgainBtn.onclick = function() {
     factory.roster = [];
-    score = 0;
+    player1Score = 0;
+    document.getElementById('player1Points').innerText = player1Score;
     round = 1;
     tackledModal.style.display = "none";
     startGame()
@@ -185,6 +186,8 @@ playAgainBtn.onclick = function() {
 nextRoundBtn.onclick = function() {
 	factory.roster = [];
 	round++;
+	player1Score += 7;
+    document.getElementById('player1Points').innerText = player1Score;
 	touchDownModal.style.display = "none";
 	startGame();
 }
@@ -251,25 +254,8 @@ const scoreTd = function() {
 	if (runningBack.body.y < 15) {
 		stopOpp();
 		touchDownModal.style.display = "block";
-		player1Score += 7;
-		document.getElementById('player1points') = player1score
 	};
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
