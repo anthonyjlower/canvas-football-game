@@ -6,12 +6,13 @@ const ctx = canvas.getContext("2d");
 const round = 1;
 const score = 0;
 const turn = "Player 1";
+let timer;
 
 const runningBack = {
 	body: {},
 	direction: "",
-	initHero: function(){
-		this.body = {x: 200, y: 600, r: 12.5, e: 0}
+	initBody: function(){
+		this.body = {x: 200, y: 590, r: 12.5, e: 0}
 	},
 	drawBody: function() {
 		ctx.beginPath();
@@ -22,24 +23,35 @@ const runningBack = {
 	},
 	move: function(){
 		if (this.direction === 'right') {
-			if (this.body.x + 10 < 600) {
+			if (this.body.x + 10 < 400	) {
 				this.body = {x: this.body.x + 10, y: this.body.y, r: 12.5, e:0}
 			}
-		} else if (this.direction === 'juke right'){	
-			this.body = {x: this.body.x + 30, y: this.body.y, r: 12.5, e:0}
+		} else if (this.direction === 'juke right'){
+			if (this.body.x + 30 < 400) {
+				this.body = {x: this.body.x + 30, y: this.body.y, r: 12.5, e:0}
+			}
 		} else if (this.direction === 'left'){
-			this.body = {x: this.body.x - 10, y: this.body.y, r: 12.5, e:0}
+			if (this.body.x - 10 > 0) {
+				this.body = {x: this.body.x - 10, y: this.body.y, r: 12.5, e:0}
+			}
 		} else if (this.direction === 'juke left'){	
-			this.body = {x: this.body.x - 30, y: this.body.y, r: 12.5, e:0}
+			if (this.body.x - 30 > 0) {
+				this.body = {x: this.body.x - 30, y: this.body.y, r: 12.5, e:0}
+			}
 		} else if (this.direction === 'up'){
-			this.body = {x: this.body.x, y: this.body.y -10, r: 12.5, e:0}
+			if (this.body.y - 10 > 0) {
+				this.body = {x: this.body.x, y: this.body.y -10, r: 12.5, e:0}
+			}
 		} else if (this.direction === 'down'){
-			this.body = {x: this.body.x, y: this.body.y +10, r: 12.5, e:0}
+			if (this.body.y + 10 < 600) {
+				this.body = {x: this.body.x, y: this.body.y +10, r: 12.5, e:0}
+			}
 		} else if (this.direction === 'truck'){
-			this.body = {x: this.body.x, y: this.body.y - 30, r: 12.5, e:0}
+			if (this.body.y - 30 > 0) {
+				this.body = {x: this.body.x, y: this.body.y - 30, r: 12.5, e:0}
+			}
 		}
 	}
-
 }
 
 
@@ -50,8 +62,8 @@ class Opponent {
 		this.body = {};
 		this.direction = "";
 	}
-	initOpponent(){
-		this.body = {x: 200, y: 0, r: 12.5, e: 0}
+	initBody(){
+		this.body = {x: Math.floor(Math.random()*400), y: 10, r: 12.5, e: 0}
 	}
 	drawBody() {
 		ctx.beginPath();
@@ -65,20 +77,28 @@ class Opponent {
 
 		// 50% of the time the opponenet moves down
 		if (randomNum <= 49) {
-			this.body = {x: this.body.x, y: this.body.y + this.speed, r: 12.5, e:0}
-			this.drawBody()
+			if (this.body.y + this.speed < 600) {
+				this.body = {x: this.body.x, y: this.body.y + this.speed, r: 12.5, e:0}
+				this.drawBody()
+			}
 		// 20% of the time the opponent moves left
 		} else if (randomNum >= 50 && randomNum <= 69){	
-			this.body = {x: this.body.x - this.speed, y: this.body.y, r: 12.5, e:0}
-			this.drawBody()
+			if (this.body.x - this.speed > 0) {
+				this.body = {x: this.body.x - this.speed, y: this.body.y, r: 12.5, e:0}
+				this.drawBody()
+			}
 		// 20% of the time the opponent moves right
-		} else if (randomNum >= 70 && randomNum <= 89){	
-			this.body = {x: this.body.x + this.speed, y: this.body.y, r: 12.5, e:0}
-			this.drawBody()
+		} else if (randomNum >= 70 && randomNum <= 89){
+			if (this.body.x + this.speed < 400) {
+				this.body = {x: this.body.x + this.speed, y: this.body.y, r: 12.5, e:0}
+				this.drawBody()
+			}
 		//10% of the time the opponent move up
 		} else {
-			this.body = {x: this.body.x, y: this.body.y - this.speed, r: 12.5, e:0}
-			this.drawBody()
+			if (this.body.x - this.speed > 0	) {
+				this.body = {x: this.body.x, y: this.body.y - this.speed, r: 12.5, e:0}
+				this.drawBody()
+			}
 		}	
 	}
 };
@@ -92,47 +112,6 @@ const factory = {
 		}
 	}
 }
-
-
-
-
-// const opponent = {
-// 		speed: 10,
-// 		body: {},
-// 	initOpponent(){
-// 		this.body = {x: 200, y: 0, r: 12.5, e: 0}
-// 	},
-// 	drawBody() {
-// 		ctx.beginPath();
-// 		ctx.arc(this.body.x, this.body.y, this.body.r, this.body.e, Math.PI*2)
-// 		ctx.strokeStyle = 'blue';
-// 		ctx.fill();
-// 		ctx.closePath();
-// 	},
-	// move: function(){
-		
-	// 	let randomNum = Math.floor(Math.random()*100)
-
-	// 	// 50% of the time the opponenet moves down
-	// 	if (randomNum <= 49) {
-	// 		this.body = {x: this.body.x, y: this.body.y + this.speed, r: 12.5, e:0}
-	// 		this.drawBody()
-	// 	// 20% of the time the opponent moves left
-	// 	} else if (randomNum >= 50 && randomNum <= 69){	
-	// 		this.body = {x: this.body.x - this.speed, y: this.body.y, r: 12.5, e:0}
-	// 		this.drawBody()
-	// 	// 20% of the time the opponent moves right
-	// 	} else if (randomNum >= 70 && randomNum <= 89){	
-	// 		this.body = {x: this.body.x + this.speed, y: this.body.y, r: 12.5, e:0}
-	// 		this.drawBody()
-	// 	//10% of the time the opponent move up
-	// 	} else {
-	// 		this.body = {x: this.body.x, y: this.body.y - this.speed, r: 12.5, e:0}
-	// 		this.drawBody()
-	// 	}	
-	// }
-// };
-
 
 
 
@@ -184,19 +163,32 @@ document.addEventListener('keydown', function(event){
 let animateCanvas = function() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	runningBack.drawBody();
-	factory.roster[0].drawBody();
+	for(let i = 0; i < factory.roster.length; i++){
+		factory.roster[i].drawBody();
+	}
 	window.requestAnimationFrame(animateCanvas)
 }
 
 
 let intervalID = setInterval(()=>{
-		factory.roster[0].move()
-	}, 500)
+		for(let i = 0; i < factory.roster.length; i++){
+			factory.roster[i].move()
+		}
+	}, 500);
+
+const placeOpponents = function() {
+	for(let i = 0; i < factory.roster.length; i++){
+		factory.roster[i].initBody()
+	}
+}
+
+
 
 
 factory.createOpponent()
-runningBack.initHero();
-factory.roster[0].initOpponent();
+runningBack.initBody();
+placeOpponents();
+
 animateCanvas();
 
 
