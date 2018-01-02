@@ -162,14 +162,13 @@ document.addEventListener('keydown', function(event){
 
 let animateCanvas = function() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	collisionDetection();
 	runningBack.drawBody();
 	for(let i = 0; i < factory.roster.length; i++){
 		factory.roster[i].drawBody();
 	}
 	window.requestAnimationFrame(animateCanvas)
 }
-
-
 
 
 //Start the loop that moves opponents
@@ -186,12 +185,27 @@ var stopOpp = function() {
 	clearInterval(timer)
 };
 
-
-
-
+//Puts the opponent markers on the field
 const placeOpponents = function() {
 	for(let i = 0; i < factory.roster.length; i++){
 		factory.roster[i].initBody()
+	}
+}
+
+const collisionDetection = function() {
+	let playerX = runningBack.body.x;
+	let playerY = runningBack.body.y;
+
+	for(let i = 0; i < factory.roster.length; i++){
+		let oppX = factory.roster[i].body.x;
+		let oppY = factory.roster[i].body.y;
+
+		let xDiff = Math.abs(playerX - oppX);
+		let yDiff = Math.abs(playerY - oppY);
+
+		if (xDiff <= 12.5 && yDiff <= 12.5) {
+			console.log("tackle")
+		}
 	}
 }
 
@@ -201,7 +215,6 @@ const placeOpponents = function() {
 factory.createOpponent()
 runningBack.initBody();
 placeOpponents();
-
 animateCanvas();
 
 
