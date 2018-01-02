@@ -170,11 +170,24 @@ let animateCanvas = function() {
 }
 
 
-let intervalID = setInterval(()=>{
+
+
+//Start the loop that moves opponents
+var startOpp = function() {
+	timer = setInterval(()=>{
 		for(let i = 0; i < factory.roster.length; i++){
-			factory.roster[i].move()
+			factory.roster[i].move();
 		}
-	}, 500);
+	},500)
+}	
+
+//Kills the loop that moves opponents
+var stopOpp = function() {
+	clearInterval(timer)
+};
+
+
+
 
 const placeOpponents = function() {
 	for(let i = 0; i < factory.roster.length; i++){
