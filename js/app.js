@@ -7,12 +7,15 @@ const round = 1;
 const score = 0;
 const turn = "Player 1";
 let timer;
+const fieldWidth = document.getElementById('field').width
+const fieldHeight = document.getElementById('field').height
 
 const runningBack = {
 	body: {},
 	direction: "",
+	speed: 10,
 	initBody: function(){
-		this.body = {x: 200, y: 590, r: 12.5, e: 0}
+		this.body = {x: fieldWidth / 2, y: fieldHeight - this.speed, r: 12.5, e: 0}
 	},
 	drawBody: function() {
 		ctx.beginPath();
@@ -23,28 +26,28 @@ const runningBack = {
 	},
 	move: function(){
 		if (this.direction === 'right') {
-			if (this.body.x + 10 < 400	) {
-				this.body = {x: this.body.x + 10, y: this.body.y, r: 12.5, e:0}
+			if (this.body.x + this.speed < 400	) {
+				this.body = {x: this.body.x + this.speed, y: this.body.y, r: 12.5, e:0}
 			}
 		} else if (this.direction === 'juke right'){
 			if (this.body.x + 30 < 400) {
 				this.body = {x: this.body.x + 30, y: this.body.y, r: 12.5, e:0}
 			}
 		} else if (this.direction === 'left'){
-			if (this.body.x - 10 > 0) {
-				this.body = {x: this.body.x - 10, y: this.body.y, r: 12.5, e:0}
+			if (this.body.x - this.speed > 0) {
+				this.body = {x: this.body.x - this.speed, y: this.body.y, r: 12.5, e:0}
 			}
 		} else if (this.direction === 'juke left'){	
 			if (this.body.x - 30 > 0) {
 				this.body = {x: this.body.x - 30, y: this.body.y, r: 12.5, e:0}
 			}
 		} else if (this.direction === 'up'){
-			if (this.body.y - 10 > 0) {
-				this.body = {x: this.body.x, y: this.body.y -10, r: 12.5, e:0}
+			if (this.body.y - this.speed > 0) {
+				this.body = {x: this.body.x, y: this.body.y -this.speed, r: 12.5, e:0}
 			}
 		} else if (this.direction === 'down'){
-			if (this.body.y + 10 < 600) {
-				this.body = {x: this.body.x, y: this.body.y +10, r: 12.5, e:0}
+			if (this.body.y + this.speed < 600) {
+				this.body = {x: this.body.x, y: this.body.y +this.speed, r: 12.5, e:0}
 			}
 		} else if (this.direction === 'truck'){
 			if (this.body.y - 30 > 0) {
@@ -63,7 +66,7 @@ class Opponent {
 		this.direction = "";
 	}
 	initBody(){
-		this.body = {x: Math.floor(Math.random()*400), y: 10, r: 12.5, e: 0}
+		this.body = {x: Math.floor(Math.random()*fieldWidth), y: this.speed, r: 12.5, e: 0}
 	}
 	drawBody() {
 		ctx.beginPath();
@@ -77,7 +80,7 @@ class Opponent {
 
 		// 50% of the time the opponenet moves down
 		if (randomNum <= 49) {
-			if (this.body.y + this.speed < 600) {
+			if (this.body.y + this.speed < fieldHeight) {
 				this.body = {x: this.body.x, y: this.body.y + this.speed, r: 12.5, e:0}
 				this.drawBody()
 			}
@@ -89,13 +92,13 @@ class Opponent {
 			}
 		// 20% of the time the opponent moves right
 		} else if (randomNum >= 70 && randomNum <= 89){
-			if (this.body.x + this.speed < 400) {
+			if (this.body.x + this.speed < fieldWidth) {
 				this.body = {x: this.body.x + this.speed, y: this.body.y, r: 12.5, e:0}
 				this.drawBody()
 			}
 		//10% of the time the opponent move up
 		} else {
-			if (this.body.x - this.speed > 0	) {
+			if (this.body.x - this.speed > 0) {
 				this.body = {x: this.body.x, y: this.body.y - this.speed, r: 12.5, e:0}
 				this.drawBody()
 			}
