@@ -174,13 +174,79 @@ const fieldLines = {
       	ctx.stroke();
       	ctx.closePath();
 
-      	//25 Yard LIne
+      	//10 Yard LIne
 		ctx.beginPath();
-      	ctx.rect(0, fieldHeight / 4, fieldWidth, 1)
+      	ctx.rect(0, 89.6, fieldWidth, 1)
       	ctx.fillStyle = "white";
       	ctx.fill();
       	ctx.stroke();
-      	ctx.closePath();      	
+      	ctx.closePath();
+
+      	//20 Yard Line
+		ctx.beginPath();
+      	ctx.rect(0, 89.6 + 52.6, fieldWidth, 1)
+      	ctx.fillStyle = "white";
+      	ctx.fill();
+      	ctx.stroke();
+      	ctx.closePath();
+
+      	//30 Yard Line
+		ctx.beginPath();
+      	ctx.rect(0, 89.6 + 52.6 * 2, fieldWidth, 1)
+      	ctx.fillStyle = "white";
+      	ctx.fill();
+      	ctx.stroke();
+      	ctx.closePath();
+
+      	//40 Yard Line
+		ctx.beginPath();
+      	ctx.rect(0, 89.6 + 52.6 * 3, fieldWidth, 1)
+      	ctx.fillStyle = "white";
+      	ctx.fill();
+      	ctx.stroke();
+      	ctx.closePath();     	
+
+
+      	//60 Yard Line
+		ctx.beginPath();
+      	ctx.rect(0, 89.6 + 52.6 * 5, fieldWidth, 1)
+      	ctx.fillStyle = "white";
+      	ctx.fill();
+      	ctx.stroke();
+      	ctx.closePath();
+
+      	//70 Yard Line
+		ctx.beginPath();
+      	ctx.rect(0, 89.6 + 52.6 * 6, fieldWidth, 1)
+      	ctx.fillStyle = "white";
+      	ctx.fill();
+      	ctx.stroke();
+      	ctx.closePath();
+
+
+      	//70 Yard Line
+		ctx.beginPath();
+      	ctx.rect(0, 89.6 + 52.6 * 7, fieldWidth, 1)
+      	ctx.fillStyle = "white";
+      	ctx.fill();
+      	ctx.stroke();
+      	ctx.closePath();
+
+      	//80 Yard Line
+		ctx.beginPath();
+      	ctx.rect(0, 89.6 + 52.6 * 8, fieldWidth, 1)
+      	ctx.fillStyle = "white";
+      	ctx.fill();
+      	ctx.stroke();
+      	ctx.closePath();
+
+      	//90 Yard Line
+		ctx.beginPath();
+      	ctx.rect(0, 89.6 + 52.6 * 9, fieldWidth, 1)
+      	ctx.fillStyle = "white";
+      	ctx.fill();
+      	ctx.stroke();
+      	ctx.closePath();
 	}
 }
 
