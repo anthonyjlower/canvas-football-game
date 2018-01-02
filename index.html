@@ -8,24 +8,30 @@
 
 
 	<div class="left-column">
-		<div class="top-box"></div> 
+		<div class="menu">
+			<button id="start-game">Start Game</button>
+			<button id="how-to">How To Play</button>
+		</div> 
 		
 		<div class="jumbotron">
 			<div class="round">
-				
+				<p>Round</p>
+				<p id="round-display">1</p>
 			</div>
 			<div class="scoreboard">
 				<div class="score">
+					<p>Player 1 Score:</p>
 					<p id="player1Points">0</p>
 				</div>
 				<div class="score">
+					<p>Player 2 Score:</p>
 					<p id="player2Points">0</p>
 				</div>
 			</div>
 		</div>	
 	</div>
 
-	<canvas id="field" width="300" height="600"></canvas>
+	<canvas id="field" width="250" height="600"></canvas>
 
 	<!-- The Modal -->
 	<div id="tackled-modal" class="modal">
@@ -41,11 +47,24 @@
 	  	<!-- Modal content -->
 	  	<div class="modal-content">
 	    	<span class="close"></span>
-	    	<p>You scored a TD!</p>
+	    	<p>You scored a touchdown!</p>
 	    	<button id="next-round">Next Around</button>
   		</div>
 	</div>
 
+	<div id="how-to-modal" class="modal">
+	  	<!-- Modal content -->
+	  	<div class="modal-content">
+	    	<span class="close"></span>
+	    	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+	    	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+	    	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+	    	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+	    	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+	    	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+	    	<button id="close">Return to Menu</button>
+  		</div>
+	</div>
 
 
 
@@ -53,3 +72,4 @@
 	<script type="text/javascript" src="js/app.js"></script>
 </body>
 </html>
+

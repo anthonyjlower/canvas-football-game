@@ -15,6 +15,10 @@ const playAgainBtn = document.getElementById('play-again');
 const tackledModal = document.getElementById('tackled-modal');
 const nextRoundBtn = document.getElementById("next-round");
 const touchDownModal = document.getElementById("touchdown-modal");
+const howToBtn = document.getElementById('how-to');
+const howToModel = document.getElementById('how-to-modal');
+const startGameBtn = document.getElementById('start-game');
+const closeBtn = document.getElementById('close');
 
 
 const runningBack = {
@@ -180,7 +184,6 @@ playAgainBtn.onclick = function() {
     document.getElementById('player1Points').innerText = player1Score;
     round = 1;
     tackledModal.style.display = "none";
-    startGame()
 }
 
 nextRoundBtn.onclick = function() {
@@ -188,11 +191,23 @@ nextRoundBtn.onclick = function() {
 	round++;
 	player1Score += 7;
     document.getElementById('player1Points').innerText = player1Score;
+    document.getElementById('round-display').innerText = round;
 	touchDownModal.style.display = "none";
 	startGame();
 }
 
 
+howToBtn.onclick = function() {
+	howToModel.style.display = "block";	
+}
+
+closeBtn.onclick = function() {
+	howToModel.style.display = "none";	
+}
+
+startGameBtn.onclick = function() {
+	startGame();	
+}
 
 let animateCanvas = function() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -213,7 +228,7 @@ var startOpp = function() {
 		for(let i = 0; i < factory.roster.length; i++){
 			factory.roster[i].move();
 		}
-	},500)
+	},250)
 };	
 
 //Kills the loop that moves opponents
