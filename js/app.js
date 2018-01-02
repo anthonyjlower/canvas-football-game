@@ -2,11 +2,9 @@
 
 
 const canvas = document.getElementById('field');
-const ctxHero = canvas.getContext("2d");
-const ctxOpp = canvas.getContext("2d");
-const endZone = canvas.getContext("2d");
+const ctx = canvas.getContext("2d");
 let round = 1;
-let score = 0;
+let player1Score = 0;
 const turn = "Player 1";
 let timer;
 const fieldWidth = document.getElementById('field').width;
@@ -27,11 +25,11 @@ const runningBack = {
 		this.body = {x: fieldWidth / 2, y: fieldHeight - this.speed, r: 12.5, e: 0}
 	},
 	drawBody: function() {
-		ctxHero.beginPath();
-		ctxHero.arc(this.body.x, this.body.y, this.body.r, this.body.e, Math.PI*2)
-		ctxHero.strokeStyle = 'black';
-		ctxHero.fill();
-		ctxHero.closePath();
+		ctx.beginPath();
+		ctx.arc(this.body.x, this.body.y, this.body.r, this.body.e, Math.PI*2)
+		ctx.strokeStyle = 'black';
+		ctx.fill();
+		ctx.closePath();
 	},
 	move: function(){
 		if (this.direction === 'right') {
@@ -78,11 +76,11 @@ class Opponent {
 		this.body = {x: Math.floor(Math.random()*fieldWidth), y: this.speed, r: 12.5, e: 0}
 	}
 	drawBody() {
-		ctxOpp.beginPath();
-		ctxOpp.arc(this.body.x, this.body.y, this.body.r, this.body.e, Math.PI*2)
-		ctxOpp.strokeStyle = 'white';
-		ctxOpp.fill();
-		ctxOpp.closePath();
+		ctx.beginPath();
+		ctx.arc(this.body.x, this.body.y, this.body.r, this.body.e, Math.PI*2)
+		ctx.strokeStyle = 'white';
+		ctx.fill();
+		ctx.closePath();
 	}
 	move() {
 		let randomNum = Math.floor(Math.random()*100)
@@ -186,7 +184,6 @@ playAgainBtn.onclick = function() {
 
 nextRoundBtn.onclick = function() {
 	factory.roster = [];
-	score += 7;
 	round++;
 	touchDownModal.style.display = "none";
 	startGame();
@@ -195,8 +192,8 @@ nextRoundBtn.onclick = function() {
 
 
 let animateCanvas = function() {
-	ctxHero.clearRect(0, 0, canvas.width, canvas.height);
-	ctxOpp.clearRect(0, 0, canvas.width, canvas.height);
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	collisionDetection();
 	scoreTd();
 	runningBack.drawBody();
@@ -254,6 +251,8 @@ const scoreTd = function() {
 	if (runningBack.body.y < 15) {
 		stopOpp();
 		touchDownModal.style.display = "block";
+		player1Score += 7;
+		document.getElementById('player1points') = player1score
 	};
 }
 
