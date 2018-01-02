@@ -2,13 +2,22 @@
 
 
 const canvas = document.getElementById('field');
-const ctx = canvas.getContext("2d");
-const round = 1;
-const score = 0;
+const ctxHero = canvas.getContext("2d");
+const ctxOpp = canvas.getContext("2d");
+const endZone = canvas.getContext("2d");
+let round = 1;
+let score = 0;
 const turn = "Player 1";
 let timer;
-const fieldWidth = document.getElementById('field').width
-const fieldHeight = document.getElementById('field').height
+const fieldWidth = document.getElementById('field').width;
+const fieldHeight = document.getElementById('field').height;
+
+
+const playAgainBtn = document.getElementById('play-again');
+const tackledModal = document.getElementById('tackled-modal');
+const nextRoundBtn = document.getElementById("next-round");
+const touchDownModal = document.getElementById("touchdown-modal");
+
 
 const runningBack = {
 	body: {},
@@ -18,19 +27,19 @@ const runningBack = {
 		this.body = {x: fieldWidth / 2, y: fieldHeight - this.speed, r: 12.5, e: 0}
 	},
 	drawBody: function() {
-		ctx.beginPath();
-		ctx.arc(this.body.x, this.body.y, this.body.r, this.body.e, Math.PI*2)
-		ctx.strokeStyle = 'black';
-		ctx.fill();
-		ctx.closePath();
+		ctxHero.beginPath();
+		ctxHero.arc(this.body.x, this.body.y, this.body.r, this.body.e, Math.PI*2)
+		ctxHero.strokeStyle = 'black';
+		ctxHero.fill();
+		ctxHero.closePath();
 	},
 	move: function(){
 		if (this.direction === 'right') {
-			if (this.body.x + this.speed < 400	) {
+			if (this.body.x + this.speed < fieldWidth	) {
 				this.body = {x: this.body.x + this.speed, y: this.body.y, r: 12.5, e:0}
 			}
 		} else if (this.direction === 'juke right'){
-			if (this.body.x + 30 < 400) {
+			if (this.body.x + 30 < fieldWidth) {
 				this.body = {x: this.body.x + 30, y: this.body.y, r: 12.5, e:0}
 			}
 		} else if (this.direction === 'left'){
@@ -46,7 +55,7 @@ const runningBack = {
 				this.body = {x: this.body.x, y: this.body.y -this.speed, r: 12.5, e:0}
 			}
 		} else if (this.direction === 'down'){
-			if (this.body.y + this.speed < 600) {
+			if (this.body.y + this.speed < fieldHeight) {
 				this.body = {x: this.body.x, y: this.body.y +this.speed, r: 12.5, e:0}
 			}
 		} else if (this.direction === 'truck'){
@@ -69,11 +78,11 @@ class Opponent {
 		this.body = {x: Math.floor(Math.random()*fieldWidth), y: this.speed, r: 12.5, e: 0}
 	}
 	drawBody() {
-		ctx.beginPath();
-		ctx.arc(this.body.x, this.body.y, this.body.r, this.body.e, Math.PI*2)
-		ctx.strokeStyle = 'black';
-		ctx.fill();
-		ctx.closePath();
+		ctxOpp.beginPath();
+		ctxOpp.arc(this.body.x, this.body.y, this.body.r, this.body.e, Math.PI*2)
+		ctxOpp.strokeStyle = 'white';
+		ctxOpp.fill();
+		ctxOpp.closePath();
 	}
 	move() {
 		let randomNum = Math.floor(Math.random()*100)
@@ -118,11 +127,18 @@ const factory = {
 
 
 
+/*******
+Field Design
+*******/
+
+
+
+
 document.addEventListener('keydown', function(event){
 	let key = event.which;
 
 	// Returns which key is being pressed
-	console.log(event.which)
+	// console.log(event.which)
 	if (key === 39) {
 		runningBack.direction = 'right';
 		runningBack.move();
@@ -159,19 +175,36 @@ document.addEventListener('keydown', function(event){
 })
 
 
+// When the user clicks on <playAgainBtn> close the modal and start over
+playAgainBtn.onclick = function() {
+    factory.roster = [];
+    score = 0;
+    round = 1;
+    tackledModal.style.display = "none";
+    startGame()
+}
 
+nextRoundBtn.onclick = function() {
+	factory.roster = [];
+	score += 7;
+	round++;
+	touchDownModal.style.display = "none";
+	startGame();
+}
 
 
 
 let animateCanvas = function() {
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	ctxHero.clearRect(0, 0, canvas.width, canvas.height);
+	ctxOpp.clearRect(0, 0, canvas.width, canvas.height);
 	collisionDetection();
+	scoreTd();
 	runningBack.drawBody();
 	for(let i = 0; i < factory.roster.length; i++){
 		factory.roster[i].drawBody();
 	}
 	window.requestAnimationFrame(animateCanvas)
-}
+};
 
 
 //Start the loop that moves opponents
@@ -181,7 +214,7 @@ var startOpp = function() {
 			factory.roster[i].move();
 		}
 	},500)
-}	
+};	
 
 //Kills the loop that moves opponents
 var stopOpp = function() {
@@ -193,7 +226,7 @@ const placeOpponents = function() {
 	for(let i = 0; i < factory.roster.length; i++){
 		factory.roster[i].initBody()
 	}
-}
+};
 
 const collisionDetection = function() {
 	let playerX = runningBack.body.x;
@@ -207,18 +240,61 @@ const collisionDetection = function() {
 		let yDiff = Math.abs(playerY - oppY);
 
 		if (xDiff <= 12.5 && yDiff <= 12.5) {
-			console.log("tackle")
+			endGame()
 		}
 	}
+};
+
+const endGame = function() {
+	stopOpp()
+	tackledModal.style.display = "block";
+};
+
+const scoreTd = function() {
+	if (runningBack.body.y < 15) {
+		stopOpp();
+		touchDownModal.style.display = "block";
+	};
 }
 
 
 
 
-factory.createOpponent()
-runningBack.initBody();
-placeOpponents();
-animateCanvas();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const startGame = function() {
+	factory.createOpponent()
+	runningBack.initBody();
+	placeOpponents();
+	animateCanvas();
+	startOpp();
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
