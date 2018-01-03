@@ -22,7 +22,8 @@ const closeBtn = document.getElementById('close');
 const startModel = document.getElementById('start-modal');
 const onePlayerBtn = document.getElementById('one-player');
 const twoPlayerBtn = document.getElementById('two-players');
-
+const gameOverModal = document.getElementById('game-over-modal');
+const endGameBtn = document.getElementById('end-game')
 
 
 //User Controlled Players
@@ -264,7 +265,7 @@ const fieldLines = {
 playAgainBtn.onclick = function() {
     if (!player1IsAlive && !player2IsAlive) {
     	tackledModal.style.display = "none";
-    	resetScoreboard()
+    	gameOverModal.style.display = "block"
     } else {
     	changePlayer()
     	tackledModal.style.display = "none";
@@ -304,15 +305,20 @@ twoPlayerBtn.onclick = function() {
 	startGame();
 }
 
+endGameBtn.onclick = function() {
+	gameOverModal.style.display = "none"
+	resetScoreboard()
+}
+
 
 const resetScoreboard = function() {
 	factory.roster = [];
     player1Score = 0;
     player2Score = 0;
+    turn = "Player 1"
     document.getElementById('player1Points').innerText = player1Score;
     document.getElementById('player2Points').innerText = player2Score;
     round = 1;
-    document.getElementById('round-display').innerText = round;
     tackledModal.style.display = "none";
 }
 
@@ -331,8 +337,10 @@ const updateScoreboard = function() {
 const updateLives = function() {
 	if (turn === "Player 1") {
 		player1IsAlive = false;
+		factory.roster = []
 	} else {
 		player2IsAlive = false;
+		factory.roster = []
 	}
 	tackledModal.style.display = "block";
 }
@@ -409,10 +417,6 @@ const collisionDetection = function() {
 	}
 };
 
-const endGame = function() {
-	stopOpp()
-};
-
 //Stope ths game - runs when the user gets into the endzone
 const scoreTd = function() {
 	if (runningBack.body.y < 30) {
@@ -476,6 +480,7 @@ fieldLines.draw();
 //Starts the game - runs no button click
 const startGame = function() {
 	document.getElementById('logo').innerText = turn;
+	document.getElementById('round-display').innerText = round;
 	factory.createOpponent()
 	runningBack.initBody();
 	placeOpponents();
