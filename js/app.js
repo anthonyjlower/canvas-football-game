@@ -8,6 +8,9 @@ let turn = "Player 1";
 let player1IsAlive = false;
 let player2IsAlive = false;
 let timer;
+let sprite = new Image();
+sprite.src = "images/rams-sprites.png"
+
 
 
 //Button and Modal selectors
@@ -26,7 +29,7 @@ const gameOverModal = document.getElementById('game-over-modal');
 const endGameBtn = document.getElementById('end-game')
 
 
-//User Controlled Players
+//User Controlcd led Players
 const runningBack = {
 	body: {},
 	direction: "",
@@ -41,6 +44,8 @@ const runningBack = {
 		ctx.fillStyle = "black";
 		ctx.fill();
 		ctx.closePath();
+
+		// ctx.drawImage(sprite,0,0)
 	},
 	move: function(){
 		if (this.direction === 'right') {
@@ -129,7 +134,7 @@ class Opponent {
 const factory = {
 	roster: [],
 	createOpponent() {
-		for(let i = 1; i <= round + 2; i++){
+		for(let i = 1; i <= round + 6; i++){
 			const newPlayer = new Opponent(this.roster.length);
 			this.roster.push(newPlayer);
 		}
