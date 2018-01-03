@@ -34,7 +34,9 @@
 		</div>	
 	</div>
 
-	<canvas id="field" width="250" height="600"></canvas>
+	<div class="gameBoard">
+		<canvas id="field" width="250" height="600"></canvas>
+	</div>
 
 	<!-- The Modal -->
 	<div id="tackled-modal" class="modal">
@@ -55,16 +57,32 @@
   		</div>
 	</div>
 
+	<div id="start-modal" class="modal">
+	  	<!-- Modal content -->
+	  	<div class="modal-content">
+	    	<span class="close"></span>
+	    	<p>How many people are playing</p>
+	    	<button id="one-player">1 Player</button>
+	    	<button id="two-players">2 Players</button>
+  		</div>
+	</div>
+
 	<div id="how-to-modal" class="modal">
 	  	<!-- Modal content -->
 	  	<div class="modal-content">
 	    	<span class="close"></span>
-	    	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-	    	tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-	    	quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-	    	consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-	    	cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-	    	proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+	    	<p>The goal of the game is to get your kick returner into the endzone without being tackled by the opposing players. In multiplayer mode the two of you switch back and forth until both of you have been tackled, and then the highest score is the winner.
+	    		<h3>Controls</h3>
+	    		<ul>
+	    			<li>Up: Move Forward</li>
+	    			<li>Down: Move Backwards</li>
+	    			<li>Left: Move Left</li>
+	    			<li>Right: Move Right</li>
+	    			<li>"a": Juke Left </li>
+	    			<li>"s": Juke Right</li>
+	    		</ul>
+
+	    	</p>
 	    	<button id="close">Return to Menu</button>
   		</div>
 	</div>

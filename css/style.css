@@ -9,7 +9,7 @@ body{
 	display: flex;
 	justify-content: space-around;
 	width: 900px;
-	height: 600px;
+	height: 700px;
 	/*border: 1px solid black;*/
 	margin: 2.5vh auto;
 	background-color: rgb(230,230,230);
@@ -24,6 +24,12 @@ div{
 	flex-direction: column;
 	justify-content: space-between;
 	border: 1px solid black;
+}
+.gameBoard{
+	width: 300px;
+	height: 610px;
+	/*border: 1px solid black;*/
+	text-align: center;
 }
 .menu{
 	width: 100%;
