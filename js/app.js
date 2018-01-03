@@ -4,7 +4,7 @@ const ctx = canvas.getContext("2d");
 let round = 1;
 let player1Score = 0;
 let player2Score = 0;
-const turn = "Player 1";
+let turn = "Player 1";
 let player1IsAlive = false;
 let player2IsAlive = false;
 let timer;
@@ -258,6 +258,160 @@ const fieldLines = {
 }
 
 
+// Modal and Button click functions
+
+// When the user clicks on <playAgainBtn> close the modal and start over
+playAgainBtn.onclick = function() {
+    factory.roster = [];
+    player1Score = 0;
+    document.getElementById('player1Points').innerText = player1Score;
+    round = 1;
+    document.getElementById('round-display').innerText = round;
+    tackledModal.style.display = "none";
+}
+
+nextRoundBtn.onclick = function() {
+	updateScoreboard();
+	changePlayer();
+	touchDownModal.style.display = "none";
+	startGame();
+}
+
+howToBtn.onclick = function() {
+	howToModel.style.display = "block";	
+}
+
+closeBtn.onclick = function() {
+	howToModel.style.display = "none";	
+}
+
+startGameBtn.onclick = function() {
+	startModel.style.display = "block";	
+}
+
+onePlayerBtn.onclick = function() {
+	player1IsAlive = true
+	startModel.style.display = "none";
+	startGame();
+}
+
+twoPlayerBtn.onclick = function() {
+	player1IsAlive = true
+	player2IsAlive = true
+	startModel.style.display = "none";	
+	startGame();
+}
+
+
+const updateScoreboard = function() {
+	if (turn === "Player 1") {
+		factory.roster = []
+		player1Score += 7;
+    	document.getElementById('player1Points').innerText = player1Score;
+	} else{
+		factory.roster = []
+		player2Score += 7;
+		document.getElementById('player2Points').innerText = player2Score;
+	}
+}
+
+const updateLives = function() {
+	if (turn === "Player 1") {
+		player1IsAlive = false;
+	} else {
+		player2IsAlive = false;
+	}
+	tackledModal.style.display = "block";
+}
+
+const changePlayer = function() {
+	if(turn === "Player 1" && player2IsAlive) {
+		turn = "Player 2";
+	} else if (turn === "Player 1" && !player2IsAlive) {
+		round++
+	} else if (turn === "Player 2" && player1IsAlive) {
+		turn = "Player 1";
+		round++;
+	} else if (turn === "Player 2" && !player1IsAlive){
+		round++;
+	}
+};
+
+
+
+
+
+//Animate the canvas
+let animateCanvas = function() {
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	collisionDetection();
+	scoreTd();
+	fieldLines.draw();
+	runningBack.drawBody();
+	for(let i = 0; i < factory.roster.length; i++){
+		factory.roster[i].drawBody();
+	}
+	window.requestAnimationFrame(animateCanvas)
+};
+
+
+//Start the loop that moves opponents
+const startOpp = function() {
+	timer = setInterval(()=>{
+		for(let i = 0; i < factory.roster.length; i++){
+			factory.roster[i].move();
+		}
+	},250)
+};	
+
+//Kills the loop that moves opponents
+const stopOpp = function() {
+	clearInterval(timer)
+};
+
+//Puts the opponent markers on the field
+const placeOpponents = function() {
+	for(let i = 0; i < factory.roster.length; i++){
+		factory.roster[i].initBody()
+	}
+};
+
+//Looks for a tackle
+const collisionDetection = function() {
+	let playerX = runningBack.body.x;
+	let playerY = runningBack.body.y;
+
+	for(let i = 0; i < factory.roster.length; i++){
+		let oppX = factory.roster[i].body.x;
+		let oppY = factory.roster[i].body.y;
+
+		let xDiff = Math.abs(playerX - oppX);
+		let yDiff = Math.abs(playerY - oppY);
+
+		if (xDiff <= runningBack.size && yDiff <= runningBack.size) {
+			stopOpp();
+			updateLives()
+		}
+	}
+};
+
+//Stops the game - runs when collisions are detected
+const endGame = function() {
+	stopOpp()
+};
+
+//Stope ths game - runs when the user gets into the endzone
+const scoreTd = function() {
+	if (runningBack.body.y < 30) {
+		stopOpp();
+		touchDownModal.style.display = "block";
+	};
+}
+
+
+
+
 
 
 //User Movement event listeners
@@ -302,126 +456,6 @@ document.addEventListener('keydown', function(event){
 })
 
 
-// Modal and Button click functions
-
-// When the user clicks on <playAgainBtn> close the modal and start over
-playAgainBtn.onclick = function() {
-    factory.roster = [];
-    player1Score = 0;
-    document.getElementById('player1Points').innerText = player1Score;
-    round = 1;
-    document.getElementById('round-display').innerText = round;
-    tackledModal.style.display = "none";
-}
-
-nextRoundBtn.onclick = function() {
-	factory.roster = [];
-	round++;
-	player1Score += 7;
-    document.getElementById('player1Points').innerText = player1Score;
-    document.getElementById('round-display').innerText = round;
-	touchDownModal.style.display = "none";
-	startGame();
-}
-
-howToBtn.onclick = function() {
-	howToModel.style.display = "block";	
-}
-
-closeBtn.onclick = function() {
-	howToModel.style.display = "none";	
-}
-
-startGameBtn.onclick = function() {
-	startModel.style.display = "block";	
-}
-
-onePlayerBtn.onclick = function() {
-	player1IsAlive = true
-	startModel.style.display = "none";
-	startGame();
-}
-
-twoPlayerBtn.onclick = function() {
-	player1IsAlive = true
-	player2IsAlive = true
-	startModel.style.display = "none";	
-	startGame();
-}
-
-
-
-//Animcate the canvas
-let animateCanvas = function() {
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	collisionDetection();
-	scoreTd();
-	fieldLines.draw();
-	runningBack.drawBody();
-	for(let i = 0; i < factory.roster.length; i++){
-		factory.roster[i].drawBody();
-	}
-	window.requestAnimationFrame(animateCanvas)
-};
-
-
-//Start the loop that moves opponents
-var startOpp = function() {
-	timer = setInterval(()=>{
-		for(let i = 0; i < factory.roster.length; i++){
-			factory.roster[i].move();
-		}
-	},250)
-};	
-
-//Kills the loop that moves opponents
-var stopOpp = function() {
-	clearInterval(timer)
-};
-
-//Puts the opponent markers on the field
-const placeOpponents = function() {
-	for(let i = 0; i < factory.roster.length; i++){
-		factory.roster[i].initBody()
-	}
-};
-
-//Looks for a tackle
-const collisionDetection = function() {
-	let playerX = runningBack.body.x;
-	let playerY = runningBack.body.y;
-
-	for(let i = 0; i < factory.roster.length; i++){
-		let oppX = factory.roster[i].body.x;
-		let oppY = factory.roster[i].body.y;
-
-		let xDiff = Math.abs(playerX - oppX);
-		let yDiff = Math.abs(playerY - oppY);
-
-		if (xDiff <= runningBack.size && yDiff <= runningBack.size) {
-			endGame()
-		}
-	}
-};
-
-//Stops the game - runs when collisions are detected
-const endGame = function() {
-	stopOpp()
-	tackledModal.style.display = "block";
-};
-
-//Stope ths game - runs when the user gets into the endzone
-const scoreTd = function() {
-	if (runningBack.body.y < 30) {
-		stopOpp();
-		touchDownModal.style.display = "block";
-	};
-}
-
-
-
-
 
 
 //Draws the lines on the field
@@ -429,6 +463,7 @@ fieldLines.draw();
 
 //Starts the game - runs no button click
 const startGame = function() {
+	document.getElementById('logo').innerText = turn;
 	factory.createOpponent()
 	runningBack.initBody();
 	placeOpponents();
@@ -437,8 +472,8 @@ const startGame = function() {
 }
 
 
-
-
+console.log(player1IsAlive)
+console.log(player2IsAlive)
 
 
 
