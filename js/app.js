@@ -262,12 +262,14 @@ const fieldLines = {
 
 // When the user clicks on <playAgainBtn> close the modal and start over
 playAgainBtn.onclick = function() {
-    factory.roster = [];
-    player1Score = 0;
-    document.getElementById('player1Points').innerText = player1Score;
-    round = 1;
-    document.getElementById('round-display').innerText = round;
-    tackledModal.style.display = "none";
+    if (!player1IsAlive && !player2IsAlive) {
+    	tackledModal.style.display = "none";
+    	resetScoreboard()
+    } else {
+    	changePlayer()
+    	tackledModal.style.display = "none";
+    	startGame()
+    }
 }
 
 nextRoundBtn.onclick = function() {
@@ -302,6 +304,17 @@ twoPlayerBtn.onclick = function() {
 	startGame();
 }
 
+
+const resetScoreboard = function() {
+	factory.roster = [];
+    player1Score = 0;
+    player2Score = 0;
+    document.getElementById('player1Points').innerText = player1Score;
+    document.getElementById('player2Points').innerText = player2Score;
+    round = 1;
+    document.getElementById('round-display').innerText = round;
+    tackledModal.style.display = "none";
+}
 
 const updateScoreboard = function() {
 	if (turn === "Player 1") {
@@ -396,7 +409,6 @@ const collisionDetection = function() {
 	}
 };
 
-//Stops the game - runs when collisions are detected
 const endGame = function() {
 	stopOpp()
 };
@@ -472,8 +484,6 @@ const startGame = function() {
 }
 
 
-console.log(player1IsAlive)
-console.log(player2IsAlive)
 
 
 
