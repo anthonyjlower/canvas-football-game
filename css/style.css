@@ -157,9 +157,36 @@ h3{
 	width: 50%;
 }
 
+.char-wrapper{
+	display: flex;
+	justify-content: space-between;;
+	margin: 0 auto;
+}
 
+.char{
+	width: 33%;
+	height: 50%;
+	direction: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
 
+.char-name{
+	text-align: center;
+	height: 25%;
+	width: 100%;
+};
 
+.char-image{
+	height: 50%;
+	width: 100%;
+}
+
+.char-button{
+	text-align: center;
+	height: 20%;
+	width: 100%;
+}
 
 
 

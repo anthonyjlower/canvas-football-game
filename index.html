@@ -44,7 +44,7 @@
 	  	<div class="modal-content">
 	    	<p>You were tackled</p>
 	    	<div class="wrapper">
-	    		<button id="play-again">Close</button>
+	    		<button id="tackled-modal-btn">Close</button>
 	    	</div>
   		</div>
 	</div>
@@ -54,7 +54,7 @@
 	  	<div class="modal-content">
 	    	<p>You scored a touchdown!</p>
 	    	<div class="wrapper">
-	    		<button id="next-round">Next Round</button>
+	    		<button id="touchdown-modal-btn">Next Round</button>
 	    	</div>
   		</div>
 	</div>
@@ -64,7 +64,7 @@
 	  	<div class="modal-content">
 	    	<p>Game Over!</p>
 	    	<div class="wrapper">
-	    		<button id="end-game">End Game</button>
+	    		<button id="game-over-modal-btn">End Game</button>
 	    	</div>
   		</div>
 	</div>
@@ -76,6 +76,36 @@
 	    	<div class="player-wrapper">
 	    		<button id="one-player">1 Player</button>
 	    		<button id="two-players">2 Players</button>
+	    	</div>
+  		</div>
+	</div>
+
+	<div id="choose-char-modal" class="modal">
+	  	<!-- Modal content -->
+	  	<div class="modal-content">
+	    	<p>Choose Your Player</p>
+	    	<div class="char-wrapper">
+	    		<div class="char">
+	    			<div class="char-name">Runningback</div>
+	    			<div class="char-image">
+	    				<img src="images/offense-sheet.png" alt="Smiley face">
+	    			</div>
+	    			<button class="char-btn" id="runningBack">Select Runningback</button>
+	    		</div>
+	    		<div class="char">
+	    			<div class="char-name">Wide Receiver</div>
+	    			<div class="char-image">
+	    				<img src="images/offense-sheet.png" alt="Smiley face">
+	    			</div>
+	    			<button class="char-btn" id="wideReceiver">Select Reveiver</button>
+	    		</div>
+	    		<div class="char">
+	    			<div class="char-name">Safety</div>
+	    			<div class="char-image">
+	    				<img src="images/offense-sheet.png" alt="Smiley face">
+	    			</div>
+	    			<button class="char-btn" id="safety">Select Safety</button>
+	    		</div>
 	    	</div>
   		</div>
 	</div>
@@ -93,10 +123,9 @@
 	    			<li>"a": Juke Left </li>
 	    			<li>"s": Juke Right</li>
 	    		</ul>
-
 	    	</p>
 	    	<div class="wrapper">
-	    		<button id="close">Return to Menu</button>
+	    		<button id="how-to-modal-btn">Return to Menu</button>
 	    	</div>
   		</div>
 	</div>
