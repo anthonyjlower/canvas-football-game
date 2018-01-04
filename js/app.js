@@ -27,6 +27,7 @@ const chooseCharModal = document.getElementById('choose-char-modal');
 
 //User Controlcd led Players
 const runningBack = {
+	number: 23,
 	body: {},
 	direction: "up",
 	speed: 8,
@@ -80,6 +81,7 @@ const runningBack = {
 }
 
 const wideReceiver = {
+	number: 88,
 	body: {},
 	direction: "up",
 	speed: 12,
@@ -133,6 +135,7 @@ const wideReceiver = {
 }
 
 const safety = {
+	number: 33,
 	body: {},
 	direction: "up",
 	speed: 10,
@@ -374,71 +377,61 @@ const game = {
 					console.log("character === runningBack") 
 					game.player1Char = runningBack;
 					game.activeChar = game.player1Char;
+					game.needToPick();
 				} else if(selectedChar === "wideReceiver"){
 					console.log("character === wideReceiver") 
 					game.player1Char = wideReceiver;
 					game.activeChar = game.player1Char;
+					game.needToPick();
 				} else if(selectedChar === "safety"){
 					console.log("character === safety") 
 					game.player1Char = safety;
 					game.activeChar = game.player1Char;
-				}
-				if (game.player2IsAlive) {
-					game.chooseCharacter2();
-				} else {
-					chooseCharModal.style.display = 'none';
-					startGame();
+					game.needToPick();
 				}
 			})
 		}
 	},
 	chooseCharacter2: function() {
 
-		chooseCharModal.style.display = "block";
+		// chooseCharModal.style.display = "block";
 		const charBtns = document.getElementsByClassName('char-btn')
-		let selectedChar = ""
+		let secondChar = ""
 
 		for(let i = 0; i < charBtns.length; i++){
+			// console.log("in the loop")
 			charBtns[i].addEventListener("click",function(event) {
-			selectedChar = this.id;
-				if (selectedChar === "runningBack") {
+			secondChar = this.id;
+				if (secondChar === "runningBack") {
 					console.log("character === runningBack") 
-					game.player1Char = runningBack;
-					game.activeChar = game.player1Char;
-				} else if(selectedChar === "wideReceiver"){
+					game.player2Char = runningBack;
+					chooseCharModal.style.display = 'none';
+					startGame();
+				} else if(secondChar === "wideReceiver"){
 					console.log("character === wideReceiver") 
-					game.player1Char = wideReceiver;
-					game.activeChar = game.player1Char;
-				} else if(selectedChar === "safety"){
+					game.player2Char = wideReceiver;
+					chooseCharModal.style.display = 'none';
+					startGame();
+				} else if(secondChar === "safety"){
 					console.log("character === safety") 
-					game.player1Char = safety;
-					game.activeChar = game.player1Char;
+					game.player2Char = safety;
+					chooseCharModal.style.display = 'none';
+					startGame();
 				}
-			chooseCharModal.style.display = 'none';
-			startGame();
 			})
 		}
+	},
+	needToPick: function() {
+		if (this.player2IsAlive) {
+			// console.log("Is alive");
+			// chooseCharModal.style.display = "none"
+			this.chooseCharacter2();
+		} else {
+			chooseCharModal.style.display = "none"
+			startGame()
+		}
 	}
-	// assignChar: function(character){
-	// 	// console.log(player)
-	// 	console.log(character)
-
-	// 	if (character === "runningBack") {
-	// 		console.log("character === runningBack") 
-	// 		game.player1Char = runningBack;
-	// 		game.activeChar = game.player1Char;
-	// 	} else if(character === "wideReceiver"){
-	// 		console.log("character === wideReceiver") 
-	// 		game.player1Char = wideReceiver;
-	// 		game.activeChar = game.player1Char;
-	// 	} else if(character === "safety"){
-	// 		console.log("character === safety") 
-	// 		game.player1Char = safety;
-	// 		game.activeChar = game.player1Char;
-	// 		chooseCharModal.style.display = "none"
-	// 		startGame();
-	// 	}
-	// }
+	
 }
 
 
