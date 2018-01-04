@@ -8,9 +8,10 @@ let turn = "Player 1";
 let player1IsAlive = false;
 let player2IsAlive = false;
 let timer;
-let sprite = new Image();
-sprite.src = "images/rams-sprites.png"
-
+let offSprite = new Image();
+offSprite.src = "images/offense-sheet.png"
+let defSprite = new Image();
+defSprite.src = "images/defense-sheet.png"
 
 
 //Button and Modal selectors
@@ -34,34 +35,28 @@ const runningBack = {
 	body: {},
 	direction: "",
 	speed: 8,
-	size: 8,
+	size: 30,
 	initBody: function(){
-		this.body = {x: canvas.width / 2, y: canvas.height - this.speed, r: this.size, e: 0}
+		this.body = {x: canvas.width / 2, y: canvas.height - 40, r: this.size, e: 0}
 	},
 	drawBody: function() {
-		ctx.beginPath();
-		ctx.arc(this.body.x, this.body.y, this.body.r, this.body.e, Math.PI*2)
-		ctx.fillStyle = "black";
-		ctx.fill();
-		ctx.closePath();
-
-		// ctx.drawImage(sprite,0,0)
+		ctx.drawImage(offSprite, 66, 198, 66, 66, this.body.x, this.body.y, this.size, this.size);
 	},
 	move: function(){
 		if (this.direction === 'right') {
-			if (this.body.x + this.speed < canvas.width - 10) {
+			if (this.body.x + this.speed < canvas.width - 30) {
 				this.body = {x: this.body.x + this.speed, y: this.body.y, r: this.size, e:0}
 			}
 		} else if (this.direction === 'juke right'){
-			if (this.body.x + 30 < canvas.width - 10) {
+			if (this.body.x + 30 < canvas.width - 30) {
 				this.body = {x: this.body.x + 30, y: this.body.y, r: this.size, e:0}
 			}
 		} else if (this.direction === 'left'){
-			if (this.body.x - this.speed > 10) {
+			if (this.body.x - this.speed > 0) {
 				this.body = {x: this.body.x - this.speed, y: this.body.y, r: this.size, e:0}
 			}
 		} else if (this.direction === 'juke left'){	
-			if (this.body.x - 30 > 30) {
+			if (this.body.x - 30 > 0) {
 				this.body = {x: this.body.x - 30, y: this.body.y, r: this.size, e:0}
 			}
 		} else if (this.direction === 'up'){
@@ -87,37 +82,33 @@ class Opponent {
 		this.number = number;
 		this.speed = 8;
 		this.body = {};
-		this.size = 8;
+		this.size = 30;
 		this.direction = "";
 	}
 	initBody(){
 		this.body = {x: Math.floor(Math.random()*canvas.width), y: 142.2, r: this.size, e: 0}
 	}
 	drawBody() {
-		ctx.beginPath();
-		ctx.arc(this.body.x, this.body.y, this.body.r, this.body.e, Math.PI*2)
-		ctx.fillStyle = 'red';
-		ctx.fill();
-		ctx.closePath();
+		ctx.drawImage(defSprite, 66, 0, 66, 66, this.body.x, this.body.y, this.size, this.size);
 	}
 	move() {
 		let randomNum = Math.floor(Math.random()*100)
 
 		// 50% of the time the opponenet moves down
 		if (randomNum <= 49) {
-			if (this.body.y + this.speed < canvas.height - 10) {
+			if (this.body.x + this.speed < canvas.width) {
 				this.body = {x: this.body.x, y: this.body.y + this.speed, r: this.size, e:0}
 				this.drawBody()
 			}
 		// 20% of the time the opponent moves left
 		} else if (randomNum >= 50 && randomNum <= 69){	
-			if (this.body.x - this.speed > 10) {
+			if (this.body.x - this.speed > 0) {
 				this.body = {x: this.body.x - this.speed, y: this.body.y, r: this.size, e:0}
 				this.drawBody()
 			}
 		// 20% of the time the opponent moves right
 		} else if (randomNum >= 70 && randomNum <= 89){
-			if (this.body.x + this.speed < canvas.width - 10) {
+			if (this.body.x + this.speed < canvas.width - 30) {
 				this.body = {x: this.body.x + this.speed, y: this.body.y, r: this.size, e:0}
 				this.drawBody()
 			}
@@ -415,7 +406,7 @@ const collisionDetection = function() {
 		let xDiff = Math.abs(playerX - oppX);
 		let yDiff = Math.abs(playerY - oppY);
 
-		if (xDiff <= runningBack.size && yDiff <= runningBack.size) {
+		if (xDiff <= runningBack.size / 2 && yDiff <= runningBack.size / 2) {
 			stopOpp();
 			updateLives()
 		}
