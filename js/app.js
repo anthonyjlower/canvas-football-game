@@ -1,13 +1,6 @@
 // Game Variables
 const canvas = document.getElementById('field');
 const ctx = canvas.getContext("2d");
-// let round = 1;
-// let player1Score = 0;
-// let player2Score = 0;
-// let turn = "Player 1";
-// let player1IsAlive = false;
-// let player2IsAlive = false;
-// let timer;
 let offSprite = new Image();
 offSprite.src = "images/offense-sheet.png"
 let defSprite = new Image();
@@ -435,125 +428,6 @@ endGameBtn.onclick = function() {
 	gameOverModal.style.display = "none"
 	game.resetScoreboard()
 }
-
-
-// const resetScoreboard = function() {
-// 	factory.roster = [];
-//     player1Score = 0;
-//     player2Score = 0;
-//     turn = "Player 1"
-//     document.getElementById('player1Points').innerText = player1Score;
-//     document.getElementById('player2Points').innerText = player2Score;
-//     round = 1;
-//     tackledModal.style.display = "none";
-// }
-
-// const updateScoreboard = function() {
-// 	if (turn === "Player 1") {
-// 		factory.roster = []
-// 		player1Score += 7;
-//     	document.getElementById('player1Points').innerText = player1Score;
-// 	} else{
-// 		factory.roster = []
-// 		player2Score += 7;
-// 		document.getElementById('player2Points').innerText = player2Score;
-// 	}
-// }
-
-// const updateLives = function() {
-// 	if (turn === "Player 1") {
-// 		player1IsAlive = false;
-// 		factory.roster = []
-// 	} else {
-// 		player2IsAlive = false;
-// 		factory.roster = []
-// 	}
-// 	tackledModal.style.display = "block";
-// }
-
-// const changePlayer = function() {
-// 	if(turn === "Player 1" && player2IsAlive) {
-// 		turn = "Player 2";
-// 	} else if (turn === "Player 1" && !player2IsAlive) {
-// 		round++
-// 	} else if (turn === "Player 2" && player1IsAlive) {
-// 		turn = "Player 1";
-// 		round++;
-// 	} else if (turn === "Player 2" && !player1IsAlive){
-// 		round++;
-// 	}
-// };
-
-
-
-
-
-// Animate the canvas
-// let animateCanvas = function() {
-// 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-// 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-// 	collisionDetection();
-// 	scoreTd();
-// 	fieldLines.draw();
-// 	runningBack.drawBody();
-// 	for(let i = 0; i < factory.roster.length; i++){
-// 		factory.roster[i].drawBody();
-// 	}
-// 	window.requestAnimationFrame(animateCanvas)
-// };
-
-
-//Start the loop that moves opponents
-// const startOpp = function() {
-// 	timer = setInterval(()=>{
-// 		for(let i = 0; i < factory.roster.length; i++){
-// 			factory.roster[i].move();
-// 		}
-// 	},250)
-// };	
-
-//Kills the loop that moves opponents
-// const stopOpp = function() {
-// 	clearInterval(timer)
-// };
-
-//Puts the opponent markers on the field
-// const placeOpponents = function() {
-// 	for(let i = 0; i < factory.roster.length; i++){
-// 		factory.roster[i].initBody()
-// 	}
-// };
-
-//Looks for a tackle
-// const collisionDetection = function() {
-// 	let playerX = runningBack.body.x;
-// 	let playerY = runningBack.body.y;
-
-// 	for(let i = 0; i < factory.roster.length; i++){
-// 		let oppX = factory.roster[i].body.x;
-// 		let oppY = factory.roster[i].body.y;
-
-// 		let xDiff = Math.abs(playerX - oppX);
-// 		let yDiff = Math.abs(playerY - oppY);
-
-// 		if (xDiff <= runningBack.size / 2 && yDiff <= runningBack.size / 2) {
-// 			stopOpp();
-// 			updateLives()
-// 		}
-// 	}
-// };
-
-//Stope ths game - runs when the user gets into the endzone
-// const scoreTd = function() {
-// 	if (runningBack.body.y < 30) {
-// 		stopOpp();
-// 		touchDownModal.style.display = "block";
-// 	};
-// }
-
-
-
-
 
 
 //User Movement event listeners
