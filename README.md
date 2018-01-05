@@ -16,6 +16,7 @@ The arrow keys allow you to control your character and the "A" and "S" keys allo
 
 # Technology
 The game was built using CSS, HTML, Javascript, and Canvas
+It does require the use of a keyboard so it is currently not playable on a mobile or tablet device.
 
 It is recommended you play on the most up to date version of your preferred browser, but as a minimum you need to be on
 
