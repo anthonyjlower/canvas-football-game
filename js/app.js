@@ -1,6 +1,8 @@
-// Game Variables
+// Canvas Variables
 const canvas = document.getElementById('field');
 const ctx = canvas.getContext("2d");
+
+//Character Images
 let rbSprite = new Image();
 rbSprite.src = "images/rb-sheet.png"
 let defSprite = new Image();
@@ -286,6 +288,7 @@ const game = {
 		}
 		window.requestAnimationFrame(game.animateCanvas);
 	},
+	//Look for collisions between the user and the computer characters
 	collisionDetection: function() {
 		let playerX = game.activeChar.body.x;
 		let playerY = game.activeChar.body.y;
@@ -303,12 +306,14 @@ const game = {
 			}
 		}
 	},
+	// Look for a user getting into the endzone
 	scoreTd: function() {
 		if (game.activeChar.body.y < 30) {
 			this.stopOpp();
 			touchdownModal.style.display = "block";
 		}
 	},
+	// Computer controlled users start to move
 	startOpp: function() {
 		this.timer = setInterval(()=>{
 			for(let i = 0; i < factory.roster.length; i++){
@@ -316,14 +321,17 @@ const game = {
 			}
 		},250)
 	},
+	//Computer controlled users stop moving
 	stopOpp: function() {
 		clearInterval(this.timer);
 	},
+	//Computer controlled users are placed on the canvas
 	placeOpponents: function() {
 		for(let i = 0; i < factory.roster.length; i++){
 			factory.roster[i].initBody();
 		}
 	},
+	// Alternate between player 1 and player2 in multiplayer mode
 	changePlayer: function() {
 		if(this.turn === "Player 1" && this.player2IsAlive) {
 			this.turn = "Player 2";
@@ -338,6 +346,7 @@ const game = {
 			this.round++;
 		}
 	},
+	// Updates game data when a player is tackled or selected
 	updateLives: function() {
 		if (this.turn === "Player 1") {
 			this.player1IsAlive = false;
@@ -368,6 +377,7 @@ const game = {
 	    document.getElementById('player1Points').innerText = this.player1Score;
 	    document.getElementById('player2Points').innerText = this.player2Score;
 	},
+	// Allows player 1 to select the character they want to play with and assigns it to the game attribute
 	chooseCharacter1: function() {
 		console.log("in choose 1")
 		chooseCharModal1.style.display = "block";
@@ -396,6 +406,7 @@ const game = {
 			})
 		}
 	},
+	// Allows player 2 to select the character they want to play with and assigns it to the game attribute
 	chooseCharacter2: function() {
 		console.log("in choose 2")
 		chooseCharModal2.style.display = "block";
@@ -425,6 +436,7 @@ const game = {
 			})
 		}
 	},
+	// After player1 selects their character checks to see if player 2 should select theirs
 	needToPick: function() {
 		if (this.player2IsAlive) {
 			// console.log("Is alive");
@@ -441,7 +453,7 @@ const game = {
 
 
 /*******
-Field Design
+Field Design -- Draws the field lines
 *******/
 const fieldLines = {
 	draw: function(){
@@ -563,7 +575,7 @@ const fieldLines = {
 
 // Modal and Button click functions
 
-// When the user clicks on <playAgainBtn> close the modal and start over
+//Button click on modal that is displayed when a player is tackled
 tackledModalBtn.onclick = function() {
     if (!game.player1IsAlive && !game.player2IsAlive) {
     	tackledModal.style.display = "none";
@@ -575,6 +587,7 @@ tackledModalBtn.onclick = function() {
     }
 }
 
+//Button click on modal that is displayed when a player scores
 touchdownModalBtn.onclick = function() {
 	game.updateScoreboard();
 	game.changePlayer();
@@ -582,36 +595,37 @@ touchdownModalBtn.onclick = function() {
 	startGame();
 }
 
+//Displays modal with instructions when someone clicks on the how to button
 howToBtn.onclick = function() {
 	howToModel.style.display = "block";	
 }
 
+//Button click on the modal that displays the how-to-play instructions
 howToModalBtn.onclick = function() {
 	howToModel.style.display = "none";	
 }
 
+//Displays a modal when a player clicks on the start game button
 startGameBtn.onclick = function() {
 	startModel.style.display = "block";	
 }
 
+//Button click on 1 Player mode in the start Game Modal
 onePlayerBtn.onclick = function() {
 	game.player1IsAlive = true;
 	startModel.style.display = "none";
 	game.chooseCharacter1();
-	// chooseCharModal.style.display = "block";
-	// startGame();
 }
 
+//Button click on the 2 player mode in the start game modal
 twoPlayerBtn.onclick = function() {
 	game.player1IsAlive = true;
-	
 	game.player2IsAlive = true;
 	startModel.style.display = "none";	
 	game.chooseCharacter1();
-	// chooseCharModal.style.display = "block";
-	// startGame();
 }
 
+//Buttonn click on the game over modal displayed when both users are tackled
 gameOverModalBtn.onclick = function() {
 	gameOverModal.style.display = "none";
 	game.resetScoreboard();
@@ -626,8 +640,6 @@ gameOverModalBtn.onclick = function() {
 document.addEventListener('keydown', function(event){
 	let key = event.which;
 
-	// Returns which key is being pressed
-	// console.log(event.which)
 	if (key === 39) {
 		game.activeChar.direction = 'right';
 		game.activeChar.move();
@@ -667,7 +679,7 @@ document.addEventListener('keydown', function(event){
 //Draws the lines on the field
 fieldLines.draw();
 
-//Starts the game - runs no button click
+//Starts the game
 const startGame = function() {
 	document.getElementById('logo').innerText = game.turn;
 	document.getElementById('round-display').innerText = game.round;
