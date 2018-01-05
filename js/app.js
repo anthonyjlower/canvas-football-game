@@ -21,7 +21,8 @@ const onePlayerBtn = document.getElementById('one-player');
 const twoPlayerBtn = document.getElementById('two-players');
 const gameOverModal = document.getElementById('game-over-modal');
 const gameOverModalBtn = document.getElementById('game-over-modal-btn');
-const chooseCharModal = document.getElementById('choose-char-modal');
+const chooseCharModal1 = document.getElementById('choose-char-modal1');
+const chooseCharModal2 = document.getElementById('choose-char-modal2');
 
 
 
@@ -250,6 +251,7 @@ class Opponent {
 const factory = {
 	roster: [],
 	createOpponent() {
+		console.log("made oppo")
 		for(let i = 1; i <= game.round + 6; i++){
 			const newPlayer = new Opponent(this.roster.length);
 			this.roster.push(newPlayer);
@@ -359,32 +361,31 @@ const game = {
 	    this.player1Score = 0;
 	    this.player2Score = 0;
 	    this.turn = "Player 1";
+	    this.round = 1;
 	    document.getElementById('player1Points').innerText = this.player1Score;
 	    document.getElementById('player2Points').innerText = this.player2Score;
-	    this.round = 1;
-	    tackledModal.style.display = "none";
 	},
 	chooseCharacter1: function() {
-
-		chooseCharModal.style.display = "block";
-		const charBtns = document.getElementsByClassName('char-btn')
+		console.log("in choose 1")
+		chooseCharModal1.style.display = "block";
+		const charBtns = document.getElementsByClassName('char-btn1')
 		let selectedChar = ""
 
 		for(let i = 0; i < charBtns.length; i++){
 			charBtns[i].addEventListener("click",function(event) {
 			selectedChar = this.id;
 				if (selectedChar === "runningBack") {
-					console.log("character === runningBack") 
+					console.log("character1 === runningBack") 
 					game.player1Char = runningBack;
 					game.activeChar = game.player1Char;
 					game.needToPick();
 				} else if(selectedChar === "wideReceiver"){
-					console.log("character === wideReceiver") 
+					console.log("character1 === wideReceiver") 
 					game.player1Char = wideReceiver;
 					game.activeChar = game.player1Char;
 					game.needToPick();
 				} else if(selectedChar === "safety"){
-					console.log("character === safety") 
+					console.log("character1 === safety") 
 					game.player1Char = safety;
 					game.activeChar = game.player1Char;
 					game.needToPick();
@@ -393,9 +394,9 @@ const game = {
 		}
 	},
 	chooseCharacter2: function() {
-
-		// chooseCharModal.style.display = "block";
-		const charBtns = document.getElementsByClassName('char-btn')
+		console.log("in choose 2")
+		chooseCharModal2.style.display = "block";
+		const charBtns = document.getElementsByClassName('char-btn2')
 		let secondChar = ""
 
 		for(let i = 0; i < charBtns.length; i++){
@@ -403,19 +404,19 @@ const game = {
 			charBtns[i].addEventListener("click",function(event) {
 			secondChar = this.id;
 				if (secondChar === "runningBack") {
-					console.log("character === runningBack") 
+					console.log("character2 === runningBack") 
 					game.player2Char = runningBack;
-					chooseCharModal.style.display = 'none';
+					chooseCharModal2.style.display = 'none';
 					startGame();
 				} else if(secondChar === "wideReceiver"){
-					console.log("character === wideReceiver") 
+					console.log("character2 === wideReceiver") 
 					game.player2Char = wideReceiver;
-					chooseCharModal.style.display = 'none';
+					chooseCharModal2.style.display = 'none';
 					startGame();
 				} else if(secondChar === "safety"){
-					console.log("character === safety") 
+					console.log("character2 === safety") 
 					game.player2Char = safety;
-					chooseCharModal.style.display = 'none';
+					chooseCharModal2.style.display = 'none';
 					startGame();
 				}
 			})
@@ -424,10 +425,10 @@ const game = {
 	needToPick: function() {
 		if (this.player2IsAlive) {
 			// console.log("Is alive");
-			// chooseCharModal.style.display = "none"
+			chooseCharModal1.style.display = "none"
 			this.chooseCharacter2();
 		} else {
-			chooseCharModal.style.display = "none"
+			chooseCharModal1.style.display = "none"
 			startGame()
 		}
 	}
