@@ -1,10 +1,14 @@
 // Game Variables
 const canvas = document.getElementById('field');
 const ctx = canvas.getContext("2d");
-let offSprite = new Image();
-offSprite.src = "images/offense-sheet.png"
+let rbSprite = new Image();
+rbSprite.src = "images/rb-sheet.png"
 let defSprite = new Image();
 defSprite.src = "images/defense-sheet.png"
+let wrSprite = new Image();
+wrSprite.src = "images/wr-sheet.png"
+let fsSprite = new Image();
+fsSprite.src = "images/fs-sheet.png"
 
 
 //Button and Modal selectors
@@ -38,15 +42,14 @@ const runningBack = {
 	},
 	drawBody: function() {
 		if (this.direction === "left") {
-			ctx.drawImage(offSprite, 66, 66, 66, 66, this.body.x, this.body.y, this.size, this.size);	
+			ctx.drawImage(rbSprite, 66, 66, 66, 66, this.body.x, this.body.y, this.size, this.size);	
 		} else if (this.direction === "right") {
-			ctx.drawImage(offSprite, 66, 132, 66, 66, this.body.x, this.body.y, this.size, this.size);	
+			ctx.drawImage(rbSprite, 66, 132, 66, 66, this.body.x, this.body.y, this.size, this.size);	
 		} else if (this.direction === "down") {
-			ctx.drawImage(offSprite, 66, 0, 66, 66, this.body.x, this.body.y, this.size, this.size);	
+			ctx.drawImage(rbSprite, 66, 0, 66, 66, this.body.x, this.body.y, this.size, this.size);	
 		} else {
-			ctx.drawImage(offSprite, 66, 198, 66, 66, this.body.x, this.body.y, this.size, this.size);	
-		}
-		
+			ctx.drawImage(rbSprite, 66, 198, 66, 66, this.body.x, this.body.y, this.size, this.size);	
+		}	
 	},
 	move: function(){
 		if (this.direction === 'right') {
@@ -92,13 +95,13 @@ const wideReceiver = {
 	},
 	drawBody: function() {
 		if (this.direction === "left") {
-			ctx.drawImage(offSprite, 66, 66, 66, 66, this.body.x, this.body.y, this.size, this.size);	
+			ctx.drawImage(wrSprite, 66, 66, 66, 66, this.body.x, this.body.y, this.size, this.size);	
 		} else if (this.direction === "right") {
-			ctx.drawImage(offSprite, 66, 132, 66, 66, this.body.x, this.body.y, this.size, this.size);	
+			ctx.drawImage(wrSprite, 66, 132, 66, 66, this.body.x, this.body.y, this.size, this.size);	
 		} else if (this.direction === "down") {
-			ctx.drawImage(offSprite, 66, 0, 66, 66, this.body.x, this.body.y, this.size, this.size);	
+			ctx.drawImage(wrSprite, 66, 0, 66, 66, this.body.x, this.body.y, this.size, this.size);	
 		} else {
-			ctx.drawImage(offSprite, 66, 198, 66, 66, this.body.x, this.body.y, this.size, this.size);	
+			ctx.drawImage(wrSprite, 66, 198, 66, 66, this.body.x, this.body.y, this.size, this.size);	
 		}
 		
 	},
@@ -146,13 +149,13 @@ const safety = {
 	},
 	drawBody: function() {
 		if (this.direction === "left") {
-			ctx.drawImage(offSprite, 66, 66, 66, 66, this.body.x, this.body.y, this.size, this.size);	
+			ctx.drawImage(fsSprite, 66, 66, 66, 66, this.body.x, this.body.y, this.size, this.size);	
 		} else if (this.direction === "right") {
-			ctx.drawImage(offSprite, 66, 132, 66, 66, this.body.x, this.body.y, this.size, this.size);	
+			ctx.drawImage(fsSprite, 66, 132, 66, 66, this.body.x, this.body.y, this.size, this.size);	
 		} else if (this.direction === "down") {
-			ctx.drawImage(offSprite, 66, 0, 66, 66, this.body.x, this.body.y, this.size, this.size);	
+			ctx.drawImage(fsSprite, 66, 0, 66, 66, this.body.x, this.body.y, this.size, this.size);	
 		} else {
-			ctx.drawImage(offSprite, 66, 198, 66, 66, this.body.x, this.body.y, this.size, this.size);	
+			ctx.drawImage(fsSprite, 66, 198, 66, 66, this.body.x, this.body.y, this.size, this.size);	
 		}
 		
 	},
@@ -162,7 +165,7 @@ const safety = {
 				this.body = {x: this.body.x + this.speed, y: this.body.y, r: this.size, e:0};
 			}
 		} else if (this.direction === 'juke right'){
-			if (this.body.x + 30 < canvas.width - 30) {
+			if (this.body.x + 20 < canvas.width - 30) {
 				this.body = {x: this.body.x + 15, y: this.body.y, r: this.size, e:0};
 			}
 		} else if (this.direction === 'left'){
@@ -170,7 +173,7 @@ const safety = {
 				this.body = {x: this.body.x - this.speed, y: this.body.y, r: this.size, e:0};
 			}
 		} else if (this.direction === 'juke left'){	
-			if (this.body.x - 30 > 0) {
+			if (this.body.x - 20 > 0) {
 				this.body = {x: this.body.x - 15, y: this.body.y, r: this.size, e:0};
 			}
 		} else if (this.direction === 'up'){
