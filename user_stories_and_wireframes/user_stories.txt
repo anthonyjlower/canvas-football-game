@@ -1,0 +1,12 @@
+On load user can click either how to play or start game buttons
+	• How to Play, brings up a modal with instructions
+	• Start game begins set up
+
+Start game allows user to choose single player or multiplayer
+	• Next users choose which character to play with
+
+Once game starts the user generates on one side of the field with opponents on the other
+	• Active player then tries to run to the opposite side of the field without colliding with the opponents
+	• In multiplayer the two players alternate back and forth until one of them have been tackled
+	• In single player you continue until you collide with an opponenet
+	
