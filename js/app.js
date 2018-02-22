@@ -43,7 +43,6 @@ class Player {
 		this.direction = "up";
 	}
 	initBody(){
-		console.log('in user initbody')
 		this.body = {x: canvas.width / 2, y: canvas.height - 40, r: this.size, e: 0};
 	}
 	drawBody(){
@@ -107,7 +106,6 @@ class Opponent {
 		this.direction = "";
 	}
 	initBody(){
-		console.log('in oppo initbody')
 		this.body = {x: Math.floor(Math.random()*220), y: 142.2, r: this.size, e: 0};
 	}
 	drawBody() {
@@ -160,9 +158,7 @@ class Opponent {
 const factory = {
 	roster: [],
 	createOpponent() {
-		console.log('in create oppo')
 		for(let i = 1; i <= game.round + 6; i++){
-			console.log("made player ", i)
 			// Instantiates the opponenet class and pushes them to roster
 			const newPlayer = new Opponent(this.roster.length);
 			this.roster.push(newPlayer);
@@ -221,7 +217,6 @@ const game = {
 	},
 	// Computer controlled users start to move
 	startOpp: function() {
-		console.log('in startOpp')
 		this.timer = setInterval(()=>{
 			for(let i = 0; i < factory.roster.length; i++){
 				factory.roster[i].move();
@@ -230,19 +225,16 @@ const game = {
 	},
 	//Computer controlled users stop moving
 	stopOpp: function() {
-		console.log('in stopOpp')
 		clearInterval(this.timer);
 	},
 	//Computer controlled users are placed on the canvas
 	placeOpponents: function() {
-		console.log('in placeoppo')
 		for(let i = 0; i < factory.roster.length; i++){
 			factory.roster[i].initBody();
 		}
 	},
 	// Alternate between player 1 and player2 in multiplayer mode
 	changePlayer: function() {
-		console.log('in changePlayer')
 		if(this.turn === "Player 1" && this.player2IsAlive) {
 			this.turn = "Player 2";
 			this.activeChar = this.player2Char;
@@ -258,7 +250,6 @@ const game = {
 	},
 	// Updates game data when a player is tackled and clears the roster
 	updateLives: function() {
-		console.log('in updateScoreboard')
 		if (this.turn === "Player 1") {
 			this.player1IsAlive = false;
 			factory.roster = [];
@@ -270,7 +261,6 @@ const game = {
 	},
 	// Updates scoreboard and clears the roster on touchdowns
 	updateScoreboard: function() {
-		console.log('in updateScoreboard')
 		if (this.turn === "Player 1") {
 			factory.roster = [];
 			this.player1Score += 7;
@@ -283,7 +273,6 @@ const game = {
 	},
 	// Updates scoreboard, turn, round, and resets roster after all users are tackled
 	resetScoreboard: function() {
-		console.log('in resetScoreboard')
 		factory.roster = [];
     this.player1Score = 0;
     this.player2Score = 0;
@@ -596,7 +585,6 @@ fieldLines.draw();
 
 //Starts the game
 const startGame = function() {
-	console.log('in start game')
 	document.getElementById('logo').innerText = game.turn;
 	document.getElementById('round-display').innerText = game.round;
 	factory.createOpponent();
