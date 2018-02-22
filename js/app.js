@@ -31,7 +31,7 @@ const chooseCharModal1 = document.getElementById('choose-char-modal1');
 const chooseCharModal2 = document.getElementById('choose-char-modal2');
 
 
-
+// User controlled character class
 class Player {
 	constructor (name, speed, jukeDist, size, image){
 		this.name = name;
@@ -43,6 +43,7 @@ class Player {
 		this.direction = "up";
 	}
 	initBody(){
+		console.log('in user initbody')
 		this.body = {x: canvas.width / 2, y: canvas.height - 40, r: this.size, e: 0};
 	}
 	drawBody(){
@@ -89,6 +90,7 @@ class Player {
 	}
 }
 
+// Player class instances
 const runningBack = new Player("runningback", 8, 30, 30, rbSprite);
 const safety = new Player('safety', 10, 20, 30, fsSprite);
 const wideReceiver = new Player('wide receiver', 12, 15, 30, wrSprite)
@@ -105,6 +107,7 @@ class Opponent {
 		this.direction = "";
 	}
 	initBody(){
+		console.log('in oppo initbody')
 		this.body = {x: Math.floor(Math.random()*220), y: 142.2, r: this.size, e: 0};
 	}
 	drawBody() {
@@ -153,13 +156,15 @@ class Opponent {
 	}
 };
 
+// Creates opponents
 const factory = {
 	roster: [],
 	createOpponent() {
-		console.log("createOpponent")
+		console.log('in create oppo')
 		for(let i = 1; i <= game.round + 6; i++){
+			console.log("made player ", i)
+			// Instantiates the opponenet class and pushes them to roster
 			const newPlayer = new Opponent(this.roster.length);
-			console.log('made ', this.roster.length, ' players')
 			this.roster.push(newPlayer);
 		}
 	}
@@ -169,11 +174,11 @@ const game = {
 	round: 1,
 	player1Score: 0,
 	player2Score: 0,
-	player1Char: {},
-	player2Char: {},
-	activeChar: {},
+	player1Char: runningBack,
+	player2Char: runningBack,
+	activeChar: runningBack,
 	turn: "Player 1",
-	player1IsAlive: false,
+	player1IsAlive: true,
 	player2IsAlive: false,
 	timer: "",
 	//Animate the canvas
@@ -216,6 +221,7 @@ const game = {
 	},
 	// Computer controlled users start to move
 	startOpp: function() {
+		console.log('in startOpp')
 		this.timer = setInterval(()=>{
 			for(let i = 0; i < factory.roster.length; i++){
 				factory.roster[i].move();
@@ -224,18 +230,19 @@ const game = {
 	},
 	//Computer controlled users stop moving
 	stopOpp: function() {
+		console.log('in stopOpp')
 		clearInterval(this.timer);
 	},
 	//Computer controlled users are placed on the canvas
 	placeOpponents: function() {
-		console.log("placeOpponents")
+		console.log('in placeoppo')
 		for(let i = 0; i < factory.roster.length; i++){
 			factory.roster[i].initBody();
 		}
 	},
 	// Alternate between player 1 and player2 in multiplayer mode
 	changePlayer: function() {
-		console.log("changePlayer")
+		console.log('in changePlayer')
 		if(this.turn === "Player 1" && this.player2IsAlive) {
 			this.turn = "Player 2";
 			this.activeChar = this.player2Char;
@@ -249,9 +256,9 @@ const game = {
 			this.round++;
 		}
 	},
-	// Updates game data when a player is tackled or selected
+	// Updates game data when a player is tackled and clears the roster
 	updateLives: function() {
-		console.log("updateLives")
+		console.log('in updateScoreboard')
 		if (this.turn === "Player 1") {
 			this.player1IsAlive = false;
 			factory.roster = [];
@@ -261,8 +268,9 @@ const game = {
 		}
 		tackledModal.style.display = "block";
 	},
+	// Updates scoreboard and clears the roster on touchdowns
 	updateScoreboard: function() {
-		console.log("updateScoreboard")
+		console.log('in updateScoreboard')
 		if (this.turn === "Player 1") {
 			factory.roster = [];
 			this.player1Score += 7;
@@ -273,84 +281,86 @@ const game = {
 			document.getElementById('player2Points').innerText = this.player2Score;
 		}
 	},
+	// Updates scoreboard, turn, round, and resets roster after all users are tackled
 	resetScoreboard: function() {
-		console.log("resetScoreboard")
+		console.log('in resetScoreboard')
 		factory.roster = [];
-	    this.player1Score = 0;
-	    this.player2Score = 0;
-	    this.turn = "Player 1";
-	    this.round = 1;
-	    document.getElementById('player1Points').innerText = this.player1Score;
-	    document.getElementById('player2Points').innerText = this.player2Score;
+    this.player1Score = 0;
+    this.player2Score = 0;
+    this.turn = "Player 1";
+    this.round = 1;
+    this.player1Char = {};
+    this.player2Char = {};
+    document.getElementById('player1Points').innerText = this.player1Score;
+    document.getElementById('player2Points').innerText = this.player2Score;
+    document.getElementById('logo').innerText = game.turn;
+		document.getElementById('round-display').innerText = game.round;
 	},
 	// Allows player 1 to select the character they want to play with and assigns it to the game attribute
-	chooseCharacter1: function() {
-		console.log("chooseCharacter1")
-		chooseCharModal1.style.display = "block";
-		const charBtns = document.getElementsByClassName('char-btn1')
-		let selectedChar = ""
+	// chooseCharacter1: function() {
+	// 	console.log('in chooseCharacter1')
+	// 	chooseCharModal1.style.display = "block";
+	// 	const charBtns = document.getElementsByClassName('char-btn1')
+	// 	let selectedChar = ""
 
-		for(let i = 0; i < charBtns.length; i++){
-			charBtns[i].addEventListener("click",function(event) {
-			selectedChar = this.id;
-				if (selectedChar === "runningBack") {
-					game.player1Char = runningBack;
-					game.activeChar = game.player1Char;
-					game.needToPick();
-				} else if(selectedChar === "wideReceiver"){
-					game.player1Char = wideReceiver;
-					game.activeChar = game.player1Char;
-					game.needToPick();
-				} else if(selectedChar === "safety"){
-					game.player1Char = safety;
-					game.activeChar = game.player1Char;
-					game.needToPick();
-				}
-			})
-		}
-	},
-	// Allows player 2 to select the character they want to play with and assigns it to the game attribute
-	chooseCharacter2: function() {
-		console.log("chooseCharacter2")
-		chooseCharModal2.style.display = "block";
-		const charBtns = document.getElementsByClassName('char-btn2')
-		let secondChar = ""
+	// 	for(let i = 0; i < charBtns.length; i++){
+	// 		charBtns[i].addEventListener("click",function(event) {
+	// 		selectedChar = this.id;
+	// 			if (selectedChar === "runningBack") {
+	// 				game.player1Char = runningBack;
+	// 				game.activeChar = game.player1Char;
+	// 				game.needToPick();
+	// 			} else if(selectedChar === "wideReceiver"){
+	// 				game.player1Char = wideReceiver;
+	// 				game.activeChar = game.player1Char;
+	// 				game.needToPick();
+	// 			} else if(selectedChar === "safety"){
+	// 				game.player1Char = safety;
+	// 				game.activeChar = game.player1Char;
+	// 				game.needToPick();
+	// 			}
+	// 		})
+	// 	}
+	// },
+	// // Allows player 2 to select the character they want to play with and assigns it to the game attribute
+	// chooseCharacter2: function() {
+	// 	console.log("chooseCharacter2")
+	// 	chooseCharModal2.style.display = "block";
+	// 	const charBtns = document.getElementsByClassName('char-btn2')
+	// 	let secondChar = ""
 
-		for(let i = 0; i < charBtns.length; i++){
-			// console.log("in the loop")
-			charBtns[i].addEventListener("click",function(event) {
-			secondChar = this.id;
-				if (secondChar === "runningBack") {
-					game.player2Char = runningBack;
-					chooseCharModal2.style.display = 'none';
-					startGame();
-				} else if(secondChar === "wideReceiver"){
-					game.player2Char = wideReceiver;
-					chooseCharModal2.style.display = 'none';
-					startGame();
-				} else if(secondChar === "safety"){
-					game.player2Char = safety;
-					chooseCharModal2.style.display = 'none';
-					startGame();
-				}
-			})
-		}
-	},
+	// 	for(let i = 0; i < charBtns.length; i++){
+	// 		charBtns[i].addEventListener("click",function(event) {
+	// 		secondChar = this.id;
+	// 			if (secondChar === "runningBack") {
+	// 				game.player2Char = runningBack;
+	// 				chooseCharModal2.style.display = 'none';
+	// 				startGame();
+	// 			} else if(secondChar === "wideReceiver"){
+	// 				game.player2Char = wideReceiver;
+	// 				chooseCharModal2.style.display = 'none';
+	// 				startGame();
+	// 			} else if(secondChar === "safety"){
+	// 				game.player2Char = safety;
+	// 				chooseCharModal2.style.display = 'none';
+	// 				startGame();
+	// 			}
+	// 		})
+	// 	}
+	// },
 	// After player1 selects their character checks to see if player 2 should select theirs
-	needToPick: function() {
-		console.log("needToPick")
-		if (this.player2IsAlive) {
-			chooseCharModal1.style.display = "none"
-			this.chooseCharacter2();
-		} else {
-			chooseCharModal1.style.display = "none"
-			startGame()
-		}
-	}
+	// needToPick: function() {
+	// 	console.log('in needToPick')
+	// 	if (this.player2IsAlive) {
+	// 		chooseCharModal1.style.display = "none"
+	// 		this.chooseCharacter2();
+	// 	} else {
+	// 		chooseCharModal1.style.display = "none"
+	// 		startGame()
+	// 	}
+	// }
 	
 }
-
-
 
 /*******
 Field Design -- Draws the field lines
@@ -473,18 +483,20 @@ const fieldLines = {
 }
 
 
-// Modal and Button click functions
+/********
+Modal and Button click functions
+*********/
 
 //Button click on modal that is displayed when a player is tackled
 tackledModalBtn.onclick = function() {
-    if (!game.player1IsAlive && !game.player2IsAlive) {
-    	tackledModal.style.display = "none";
-    	gameOverModal.style.display = "block";
-    } else {
-    	game.changePlayer();
-    	tackledModal.style.display = "none";
-    	startGame();
-    }
+  if (!game.player1IsAlive && !game.player2IsAlive) {
+  	tackledModal.style.display = "none";
+  	gameOverModal.style.display = "block";
+  } else {
+  	game.changePlayer();
+  	tackledModal.style.display = "none";
+  	startGame();
+  }
 }
 
 //Button click on modal that is displayed when a player scores
@@ -508,13 +520,15 @@ howToModalBtn.onclick = function() {
 //Displays a modal when a player clicks on the start game button
 startGameBtn.onclick = function() {
 	startModel.style.display = "block";	
+	// startGame();
 }
 
 //Button click on 1 Player mode in the start Game Modal
 onePlayerBtn.onclick = function() {
 	game.player1IsAlive = true;
 	startModel.style.display = "none";
-	game.chooseCharacter1();
+	// game.chooseCharacter1();
+	startGame();
 }
 
 //Button click on the 2 player mode in the start game modal
@@ -522,7 +536,8 @@ twoPlayerBtn.onclick = function() {
 	game.player1IsAlive = true;
 	game.player2IsAlive = true;
 	startModel.style.display = "none";	
-	game.chooseCharacter1();
+	// game.chooseCharacter1();
+	startGame();
 }
 
 //Buttonn click on the game over modal displayed when both users are tackled
@@ -581,6 +596,7 @@ fieldLines.draw();
 
 //Starts the game
 const startGame = function() {
+	console.log('in start game')
 	document.getElementById('logo').innerText = game.turn;
 	document.getElementById('round-display').innerText = game.round;
 	factory.createOpponent();
@@ -589,30 +605,3 @@ const startGame = function() {
 	game.animateCanvas();
 	game.startOpp();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
