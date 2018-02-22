@@ -32,43 +32,46 @@ const chooseCharModal2 = document.getElementById('choose-char-modal2');
 
 
 
-//User Controlcd led Players
-const runningBack = {
-	number: 23,
-	body: {},
-	direction: "up",
-	speed: 8,
-	size: 30,
-	initBody: function(){
+class Player {
+	constructor (name, speed, jukeDist, size, image){
+		this.name = name;
+		this.speed = speed;
+		this.jukeDist = jukeDist;
+		this.size = size;
+		this.body = {};
+		this.image = image
+		this.direction = "up";
+	}
+	initBody(){
 		this.body = {x: canvas.width / 2, y: canvas.height - 40, r: this.size, e: 0};
-	},
-	drawBody: function() {
+	}
+	drawBody(){
 		if (this.direction === "left") {
-			ctx.drawImage(rbSprite, 66, 66, 66, 66, this.body.x, this.body.y, this.size, this.size);	
+			ctx.drawImage(this.image, 66, 66, 66, 66, this.body.x, this.body.y, this.size, this.size);	
 		} else if (this.direction === "right") {
-			ctx.drawImage(rbSprite, 66, 132, 66, 66, this.body.x, this.body.y, this.size, this.size);	
+			ctx.drawImage(this.image, 66, 132, 66, 66, this.body.x, this.body.y, this.size, this.size);	
 		} else if (this.direction === "down") {
-			ctx.drawImage(rbSprite, 66, 0, 66, 66, this.body.x, this.body.y, this.size, this.size);	
+			ctx.drawImage(this.image, 66, 0, 66, 66, this.body.x, this.body.y, this.size, this.size);	
 		} else {
-			ctx.drawImage(rbSprite, 66, 198, 66, 66, this.body.x, this.body.y, this.size, this.size);	
+			ctx.drawImage(this.image, 66, 198, 66, 66, this.body.x, this.body.y, this.size, this.size);	
 		}	
-	},
-	move: function(){
+	}
+	move(){
 		if (this.direction === 'right') {
 			if (this.body.x + this.speed < canvas.width - 30) {
 				this.body = {x: this.body.x + this.speed, y: this.body.y, r: this.size, e:0};
 			}
 		} else if (this.direction === 'juke right'){
-			if (this.body.x + 30 < canvas.width - 30) {
-				this.body = {x: this.body.x + 30, y: this.body.y, r: this.size, e:0};
+			if (this.body.x + this.jukeDist < canvas.width - 30) {
+				this.body = {x: this.body.x + this.jukeDist, y: this.body.y, r: this.size, e:0};
 			}
 		} else if (this.direction === 'left'){
 			if (this.body.x - this.speed > 0) {
 				this.body = {x: this.body.x - this.speed, y: this.body.y, r: this.size, e:0};
 			}
 		} else if (this.direction === 'juke left'){	
-			if (this.body.x - 30 > 0) {
-				this.body = {x: this.body.x - 30, y: this.body.y, r: this.size, e:0};
+			if (this.body.x - this.jukeDist > 0) {
+				this.body = {x: this.body.x - this.jukeDist, y: this.body.y, r: this.size, e:0};
 			}
 		} else if (this.direction === 'up'){
 			if (this.body.y - this.speed > 0) {
@@ -86,113 +89,10 @@ const runningBack = {
 	}
 }
 
-const wideReceiver = {
-	number: 88,
-	body: {},
-	direction: "up",
-	speed: 12,
-	size: 30,
-	initBody: function(){
-		this.body = {x: canvas.width / 2, y: canvas.height - 40, r: this.size, e: 0};
-	},
-	drawBody: function() {
-		if (this.direction === "left") {
-			ctx.drawImage(wrSprite, 66, 66, 66, 66, this.body.x, this.body.y, this.size, this.size);	
-		} else if (this.direction === "right") {
-			ctx.drawImage(wrSprite, 66, 132, 66, 66, this.body.x, this.body.y, this.size, this.size);	
-		} else if (this.direction === "down") {
-			ctx.drawImage(wrSprite, 66, 0, 66, 66, this.body.x, this.body.y, this.size, this.size);	
-		} else {
-			ctx.drawImage(wrSprite, 66, 198, 66, 66, this.body.x, this.body.y, this.size, this.size);	
-		}
-		
-	},
-	move: function(){
-		if (this.direction === 'right') {
-			if (this.body.x + this.speed < canvas.width - 30) {
-				this.body = {x: this.body.x + this.speed, y: this.body.y, r: this.size, e:0};
-			}
-		} else if (this.direction === 'juke right'){
-			if (this.body.x + 30 < canvas.width - 30) {
-				this.body = {x: this.body.x + 15, y: this.body.y, r: this.size, e:0};
-			}
-		} else if (this.direction === 'left'){
-			if (this.body.x - this.speed > 0) {
-				this.body = {x: this.body.x - this.speed, y: this.body.y, r: this.size, e:0};
-			}
-		} else if (this.direction === 'juke left'){	
-			if (this.body.x - 30 > 0) {
-				this.body = {x: this.body.x - 15, y: this.body.y, r: this.size, e:0};
-			}
-		} else if (this.direction === 'up'){
-			if (this.body.y - this.speed > 0) {
-				this.body = {x: this.body.x, y: this.body.y -this.speed, r: this.size, e:0};
-			}
-		} else if (this.direction === 'down'){
-			if (this.body.y + this.speed < canvas.height) {
-				this.body = {x: this.body.x, y: this.body.y +this.speed, r: this.size, e:0};
-			}
-		} else if (this.direction === 'truck'){
-			if (this.body.y - 30 > 0) {
-				this.body = {x: this.body.x, y: this.body.y - 30, r: this.size, e:0};
-			}
-		}
-	}
-}
+const runningBack = new Player("runningback", 8, 30, 30, rbSprite);
+const safety = new Player('safety', 10, 20, 30, fsSprite);
+const wideReceiver = new Player('wide receiver', 12, 15, 30, wrSprite)
 
-const safety = {
-	number: 33,
-	body: {},
-	direction: "up",
-	speed: 10,
-	size: 30,
-	initBody: function(){
-		this.body = {x: canvas.width / 2, y: canvas.height - 40, r: this.size, e: 0};
-	},
-	drawBody: function() {
-		if (this.direction === "left") {
-			ctx.drawImage(fsSprite, 66, 66, 66, 66, this.body.x, this.body.y, this.size, this.size);	
-		} else if (this.direction === "right") {
-			ctx.drawImage(fsSprite, 66, 132, 66, 66, this.body.x, this.body.y, this.size, this.size);	
-		} else if (this.direction === "down") {
-			ctx.drawImage(fsSprite, 66, 0, 66, 66, this.body.x, this.body.y, this.size, this.size);	
-		} else {
-			ctx.drawImage(fsSprite, 66, 198, 66, 66, this.body.x, this.body.y, this.size, this.size);	
-		}
-		
-	},
-	move: function(){
-		if (this.direction === 'right') {
-			if (this.body.x + this.speed < canvas.width - 30) {
-				this.body = {x: this.body.x + this.speed, y: this.body.y, r: this.size, e:0};
-			}
-		} else if (this.direction === 'juke right'){
-			if (this.body.x + 20 < canvas.width - 30) {
-				this.body = {x: this.body.x + 15, y: this.body.y, r: this.size, e:0};
-			}
-		} else if (this.direction === 'left'){
-			if (this.body.x - this.speed > 0) {
-				this.body = {x: this.body.x - this.speed, y: this.body.y, r: this.size, e:0};
-			}
-		} else if (this.direction === 'juke left'){	
-			if (this.body.x - 20 > 0) {
-				this.body = {x: this.body.x - 15, y: this.body.y, r: this.size, e:0};
-			}
-		} else if (this.direction === 'up'){
-			if (this.body.y - this.speed > 0) {
-				this.body = {x: this.body.x, y: this.body.y -this.speed, r: this.size, e:0};
-			}
-		} else if (this.direction === 'down'){
-			if (this.body.y + this.speed < canvas.height) {
-				this.body = {x: this.body.x, y: this.body.y +this.speed, r: this.size, e:0};
-			}
-		} else if (this.direction === 'truck'){
-			if (this.body.y - 30 > 0) {
-				this.body = {x: this.body.x, y: this.body.y - 30, r: this.size, e:0};
-			}
-		}
-	}
-}
 
 
 // Computer controlled players
@@ -256,9 +156,10 @@ class Opponent {
 const factory = {
 	roster: [],
 	createOpponent() {
-		console.log("made oppo")
+		console.log("createOpponent")
 		for(let i = 1; i <= game.round + 6; i++){
 			const newPlayer = new Opponent(this.roster.length);
+			console.log('made ', this.roster.length, ' players')
 			this.roster.push(newPlayer);
 		}
 	}
@@ -327,12 +228,14 @@ const game = {
 	},
 	//Computer controlled users are placed on the canvas
 	placeOpponents: function() {
+		console.log("placeOpponents")
 		for(let i = 0; i < factory.roster.length; i++){
 			factory.roster[i].initBody();
 		}
 	},
 	// Alternate between player 1 and player2 in multiplayer mode
 	changePlayer: function() {
+		console.log("changePlayer")
 		if(this.turn === "Player 1" && this.player2IsAlive) {
 			this.turn = "Player 2";
 			this.activeChar = this.player2Char;
@@ -342,12 +245,13 @@ const game = {
 			this.turn = "Player 1";
 			this.activeChar = this.player1Char;
 			this.round++;
-		} else if (this.turn === "Player 2" && !this.player1IsAlive){
+		} else if (this.turn === "Player 2" && !this.player1IsAlive) {
 			this.round++;
 		}
 	},
 	// Updates game data when a player is tackled or selected
 	updateLives: function() {
+		console.log("updateLives")
 		if (this.turn === "Player 1") {
 			this.player1IsAlive = false;
 			factory.roster = [];
@@ -358,6 +262,7 @@ const game = {
 		tackledModal.style.display = "block";
 	},
 	updateScoreboard: function() {
+		console.log("updateScoreboard")
 		if (this.turn === "Player 1") {
 			factory.roster = [];
 			this.player1Score += 7;
@@ -369,6 +274,7 @@ const game = {
 		}
 	},
 	resetScoreboard: function() {
+		console.log("resetScoreboard")
 		factory.roster = [];
 	    this.player1Score = 0;
 	    this.player2Score = 0;
@@ -379,7 +285,7 @@ const game = {
 	},
 	// Allows player 1 to select the character they want to play with and assigns it to the game attribute
 	chooseCharacter1: function() {
-		console.log("in choose 1")
+		console.log("chooseCharacter1")
 		chooseCharModal1.style.display = "block";
 		const charBtns = document.getElementsByClassName('char-btn1')
 		let selectedChar = ""
@@ -388,17 +294,14 @@ const game = {
 			charBtns[i].addEventListener("click",function(event) {
 			selectedChar = this.id;
 				if (selectedChar === "runningBack") {
-					console.log("character1 === runningBack") 
 					game.player1Char = runningBack;
 					game.activeChar = game.player1Char;
 					game.needToPick();
 				} else if(selectedChar === "wideReceiver"){
-					console.log("character1 === wideReceiver") 
 					game.player1Char = wideReceiver;
 					game.activeChar = game.player1Char;
 					game.needToPick();
 				} else if(selectedChar === "safety"){
-					console.log("character1 === safety") 
 					game.player1Char = safety;
 					game.activeChar = game.player1Char;
 					game.needToPick();
@@ -408,7 +311,7 @@ const game = {
 	},
 	// Allows player 2 to select the character they want to play with and assigns it to the game attribute
 	chooseCharacter2: function() {
-		console.log("in choose 2")
+		console.log("chooseCharacter2")
 		chooseCharModal2.style.display = "block";
 		const charBtns = document.getElementsByClassName('char-btn2')
 		let secondChar = ""
@@ -418,17 +321,14 @@ const game = {
 			charBtns[i].addEventListener("click",function(event) {
 			secondChar = this.id;
 				if (secondChar === "runningBack") {
-					console.log("character2 === runningBack") 
 					game.player2Char = runningBack;
 					chooseCharModal2.style.display = 'none';
 					startGame();
 				} else if(secondChar === "wideReceiver"){
-					console.log("character2 === wideReceiver") 
 					game.player2Char = wideReceiver;
 					chooseCharModal2.style.display = 'none';
 					startGame();
 				} else if(secondChar === "safety"){
-					console.log("character2 === safety") 
 					game.player2Char = safety;
 					chooseCharModal2.style.display = 'none';
 					startGame();
@@ -438,8 +338,8 @@ const game = {
 	},
 	// After player1 selects their character checks to see if player 2 should select theirs
 	needToPick: function() {
+		console.log("needToPick")
 		if (this.player2IsAlive) {
-			// console.log("Is alive");
 			chooseCharModal1.style.display = "none"
 			this.chooseCharacter2();
 		} else {
@@ -683,12 +583,13 @@ fieldLines.draw();
 const startGame = function() {
 	document.getElementById('logo').innerText = game.turn;
 	document.getElementById('round-display').innerText = game.round;
-	factory.createOpponent()
+	factory.createOpponent();
 	game.activeChar.initBody();
 	game.placeOpponents();
 	game.animateCanvas();
 	game.startOpp();
 }
+
 
 
 
